@@ -2,7 +2,9 @@ const CACHE_NAME = 'ashqaf-donasi-v1';
 const urlsToCache = [
   './',
   './index.html',
-  './manifest.json'
+  './manifest.json',
+  './icon-192x192.png',
+  './icon-512x512.png'
 ];
 
 // Install Event - Melakukan Caching awal
