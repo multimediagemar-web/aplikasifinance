@@ -270,36 +270,48 @@
         <!-- ================= VIEW: PENGATURAN ================= -->
         <section id="view-pengaturan" class="hidden animate-fade-in space-y-4">
             
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden mb-6">
+            <!-- Pengaturan Program -->
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden mb-4">
                 <div class="absolute top-0 right-0 w-24 h-24 bg-slate-50 rounded-bl-full"></div>
                 <h2 class="text-lg font-semibold text-slate-700 mb-6 flex items-center relative z-10">
-                    <i data-lucide="settings-2" class="w-5 h-5 mr-2 text-slate-500"></i> Pengaturan Master
+                    <i data-lucide="pie-chart" class="w-5 h-5 mr-2 text-slate-500"></i> Master Program
                 </h2>
                 
-                <form id="settingProgramForm" class="space-y-4 relative z-10 mb-8 pb-8 border-b border-slate-100">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-600 mb-2">Tambah Program (Alokasi) Baru</label>
-                        <div class="flex space-x-2">
-                            <input type="text" id="newProgram" required class="flex-1 px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-ashqaf/50 focus:border-ashqaf transition-colors" placeholder="Cth: Qurban 1445 H">
-                            <button type="submit" class="bg-ashqaf hover:bg-ashqaf-dark text-white px-4 rounded-xl shadow-md transition-all flex items-center justify-center">
-                                <i data-lucide="plus" class="w-5 h-5"></i>
-                            </button>
-                        </div>
+                <form id="settingProgramForm" class="space-y-4 relative z-10 mb-6">
+                    <div class="flex space-x-2">
+                        <input type="text" id="newProgram" required class="flex-1 px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-ashqaf/50 focus:border-ashqaf transition-colors" placeholder="Tambah Program Baru...">
+                        <button type="submit" class="bg-ashqaf hover:bg-ashqaf-dark text-white px-4 rounded-xl shadow-md transition-all flex items-center justify-center">
+                            <i data-lucide="plus" class="w-5 h-5"></i>
+                        </button>
                     </div>
                 </form>
 
-                <form id="settingDivisiForm" class="space-y-4 relative z-10">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-600 mb-2">Tambah Divisi Baru</label>
-                        <div class="flex space-x-2">
-                            <input type="text" id="newDivisi" required class="flex-1 px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-ashqaf/50 focus:border-ashqaf transition-colors" placeholder="Cth: Relawan Desa">
-                            <button type="submit" class="bg-ashqaf hover:bg-ashqaf-dark text-white px-4 rounded-xl shadow-md transition-all flex items-center justify-center">
-                                <i data-lucide="plus" class="w-5 h-5"></i>
-                            </button>
-                        </div>
+                <div id="listProgramRender" class="space-y-2 relative z-10">
+                    <div class="text-center py-4 text-slate-400 text-xs animate-pulse">Memuat daftar program...</div>
+                </div>
+            </div>
+
+            <!-- Pengaturan Divisi -->
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden mb-6">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-slate-50 rounded-bl-full"></div>
+                <h2 class="text-lg font-semibold text-slate-700 mb-6 flex items-center relative z-10">
+                    <i data-lucide="users" class="w-5 h-5 mr-2 text-slate-500"></i> Master Divisi
+                </h2>
+                
+                <form id="settingDivisiForm" class="space-y-4 relative z-10 mb-6">
+                    <div class="flex space-x-2">
+                        <input type="text" id="newDivisi" required class="flex-1 px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-ashqaf/50 focus:border-ashqaf transition-colors" placeholder="Tambah Divisi Baru...">
+                        <button type="submit" class="bg-ashqaf hover:bg-ashqaf-dark text-white px-4 rounded-xl shadow-md transition-all flex items-center justify-center">
+                            <i data-lucide="plus" class="w-5 h-5"></i>
+                        </button>
                     </div>
                 </form>
+
+                <div id="listDivisiRender" class="space-y-2 relative z-10">
+                    <div class="text-center py-4 text-slate-400 text-xs animate-pulse">Memuat daftar divisi...</div>
+                </div>
             </div>
+            <div class="h-4"></div> <!-- spacer -->
         </section>
 
     </main>
@@ -335,25 +347,41 @@
         </div>
     </nav>
 
-    <!-- Overlay Loading Spinner -->
-    <div id="loadingOverlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-[200]">
-        <div class="bg-white p-6 rounded-3xl shadow-2xl flex flex-col items-center">
-            <i data-lucide="loader-2" class="w-10 h-10 text-ashqaf animate-spin mb-4"></i>
-            <p class="text-slate-700 font-medium text-sm">Sinkronisasi Data...</p>
+    <!-- Custom Modal (Dialog Box) -->
+    <div id="customModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-[250] px-4 transition-opacity duration-300 opacity-0">
+        <div class="bg-white p-6 rounded-3xl shadow-2xl w-full max-w-sm transform transition-all scale-95 duration-300" id="modalContent">
+            <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-4 mx-auto" id="modalIconContainer">
+                <i id="modalIcon" data-lucide="edit-3" class="w-6 h-6 text-slate-600"></i>
+            </div>
+            <h3 id="modalTitle" class="text-lg font-bold text-slate-800 mb-2 text-center">Judul Modal</h3>
+            <p id="modalDesc" class="text-sm text-slate-500 mb-5 text-center">Deskripsi modal</p>
+            
+            <input type="text" id="modalInput" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-ashqaf/50 focus:border-ashqaf transition-colors mb-5 hidden text-center font-medium">
+            
+            <div class="flex space-x-3">
+                <button onclick="closeModal()" class="flex-1 py-3.5 rounded-xl font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors">Batal</button>
+                <button id="modalConfirmBtn" class="flex-1 py-3.5 rounded-xl font-bold text-white shadow-lg transition-all">Simpan</button>
+            </div>
         </div>
     </div>
 
-    <!-- Application Script -->
+    <!-- Overlay Loading Spinner -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-[300]">
+        <div class="bg-white p-6 rounded-2xl shadow-xl flex flex-col items-center">
+            <i data-lucide="loader-2" class="w-10 h-10 text-ashqaf animate-spin mb-4"></i>
+            <p class="text-slate-700 font-medium">Memproses data...</p>
+        </div>
+    </div>
+
+    <!-- SCRIPT APLIKASI -->
     <script>
         // Init Icons
         lucide.createIcons();
 
-        // --- KONFIGURASI WEB APP URL ---
-        // GANTI URL DI BAWAH DENGAN URL WEB APP DEPLOYMENT TERBARU ANDA
-        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw-QM_9nQWvy9NXftocl2KHqiIfjYVaq67AyAXxdv7NbqjhT6mK9mb2IpKaOq2lkuoz/exec";
+        // KONFIGURASI WEB APP URL GOOGLE APPS SCRIPT
+        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycby1KuDikwjEdjH9ltxyL5MzM_eNJ0MXkUbtdrXlEiQqKQvzRxw45tHrHLo3wOT5-xwp/exec";
 
-        // DOM Elements Global
-        const loadingOverlay = document.getElementById('loadingOverlay');
+        // DOM Elements
         const viewDashboard = document.getElementById('view-dashboard');
         const viewDonasi = document.getElementById('view-donasi');
         const viewPenarikan = document.getElementById('view-penarikan');
@@ -362,11 +390,19 @@
         const toast = document.getElementById('toast');
         const toastMsg = document.getElementById('toastMsg');
         const toastIcon = document.getElementById('toastIcon');
+        const loadingOverlay = document.getElementById('loadingOverlay');
 
         // State variables
         let base64String = "";
         let uploadedFileName = "";
         let uploadedMimeType = "";
+
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW registration failed: ', err));
+            });
+        }
 
         // Custom Toast Notification (Replaces alert)
         function showToast(message, type = 'success') {
@@ -392,6 +428,103 @@
                 toast.classList.add('opacity-0', '-translate-y-24');
             }, 3500);
         }
+
+        // --- Custom Modal Logic ---
+        let currentModalAction = null;
+        let currentModalType = null;
+        let currentModalValue = null;
+
+        function openModal(action, type, value) {
+            currentModalAction = action;
+            currentModalType = type;
+            currentModalValue = value;
+
+            const modal = document.getElementById('customModal');
+            const content = document.getElementById('modalContent');
+            const title = document.getElementById('modalTitle');
+            const desc = document.getElementById('modalDesc');
+            const input = document.getElementById('modalInput');
+            const btn = document.getElementById('modalConfirmBtn');
+            const icon = document.getElementById('modalIcon');
+            const iconCont = document.getElementById('modalIconContainer');
+
+            // Setup UI based on action
+            if (action === 'edit') {
+                title.textContent = `Edit Data ${type === 'divisi' ? 'Divisi' : 'Program'}`;
+                desc.textContent = "Silakan ubah nama data di bawah ini:";
+                input.value = value;
+                input.classList.remove('hidden');
+                
+                btn.textContent = "Simpan Ubahan";
+                btn.className = "flex-1 py-3.5 rounded-xl font-bold text-white shadow-lg transition-all bg-ashqaf hover:bg-ashqaf-dark shadow-ashqaf/30";
+                
+                icon.setAttribute('data-lucide', 'edit-3');
+                iconCont.className = "w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center mb-4 mx-auto";
+                icon.className = "w-6 h-6 text-blue-500";
+            } else if (action === 'delete') {
+                title.textContent = `Hapus Data?`;
+                desc.innerHTML = `Apakah Anda yakin ingin menghapus <b>${value}</b>? Data riwayat yang sudah memakai nama ini tidak akan terhapus.`;
+                input.classList.add('hidden');
+                
+                btn.textContent = "Ya, Hapus";
+                btn.className = "flex-1 py-3.5 rounded-xl font-bold text-white shadow-lg transition-all bg-red-500 hover:bg-red-600 shadow-red-500/30";
+                
+                icon.setAttribute('data-lucide', 'trash-2');
+                iconCont.className = "w-12 h-12 rounded-full bg-red-50 flex items-center justify-center mb-4 mx-auto";
+                icon.className = "w-6 h-6 text-red-500";
+            }
+
+            lucide.createIcons();
+            
+            // Show Modal with Animation
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('customModal');
+            const content = document.getElementById('modalContent');
+            
+            modal.classList.add('opacity-0');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        document.getElementById('modalConfirmBtn').addEventListener('click', () => {
+            closeModal();
+            if (currentModalAction === 'edit') {
+                const newValue = document.getElementById('modalInput').value.trim();
+                if (newValue && newValue !== currentModalValue) {
+                    executeSettingUpdate('settings_edit', currentModalType, currentModalValue, newValue);
+                }
+            } else if (currentModalAction === 'delete') {
+                executeSettingUpdate('settings_delete', currentModalType, currentModalValue, null);
+            }
+        });
+
+        async function executeSettingUpdate(jenis, tipe, oldVal, newVal) {
+            loadingOverlay.classList.remove('hidden');
+            const payload = { jenis: jenis, tipe: tipe, oldVal: oldVal, newVal: newVal, val: oldVal };
+
+            try {
+                await fetch(GAS_WEB_APP_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                showToast(`Data ${tipe} berhasil diperbarui!`);
+                fetchDashboardData(); // Refresh UI
+            } catch (error) {
+                showToast("Gagal jaringan: " + error.message, "error");
+            } finally {
+                loadingOverlay.classList.add('hidden');
+            }
+        }
+        // --- End Custom Modal Logic ---
 
         // Tab Navigation Logic
         function switchTab(tab) {
@@ -563,6 +696,8 @@
             const historyContainer = document.getElementById('mixedHistory');
             const dashPerProgram = document.getElementById('dashPerProgram');
             const dashPerDivisi = document.getElementById('dashPerDivisi');
+            const listDivisiRender = document.getElementById('listDivisiRender');
+            const listProgramRender = document.getElementById('listProgramRender');
             
             historyContainer.innerHTML = `<div class="text-center py-4 text-slate-400 text-xs animate-pulse">Menyinkronkan data...</div>`;
             dashPerProgram.innerHTML = `<div class="text-center py-2 text-slate-400 text-xs animate-pulse">Memuat...</div>`;
@@ -582,6 +717,38 @@
                     populateSelect('divisi', data.settings.divisi, "Pilih Divisi...");
                     populateSelect('alokasi', data.settings.program, "Pilih Alokasi/Program...");
                     populateSelect('alokasiPenarikan', data.settings.program, "Pilih Alokasi/Program...");
+                    
+                    // Render List Divisi di Tab Pengaturan
+                    listDivisiRender.innerHTML = '';
+                    if(data.settings.divisi.length === 0) listDivisiRender.innerHTML = `<div class="text-xs text-slate-400 py-2">Belum ada divisi terdaftar.</div>`;
+                    data.settings.divisi.forEach(item => {
+                        const safeItem = item.replace(/'/g, "\\'"); // escape single quotes for onclick
+                        listDivisiRender.insertAdjacentHTML('beforeend', `
+                            <div class="flex justify-between items-center p-3.5 bg-slate-50 border border-slate-100 rounded-xl mb-2 hover:bg-slate-100 transition-colors">
+                                <span class="text-sm font-semibold text-slate-700">${item}</span>
+                                <div class="flex space-x-2">
+                                    <button onclick="openModal('edit', 'divisi', '${safeItem}')" type="button" class="p-2 text-blue-500 bg-blue-100/50 hover:bg-blue-100 rounded-lg transition-colors"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
+                                    <button onclick="openModal('delete', 'divisi', '${safeItem}')" type="button" class="p-2 text-red-500 bg-red-100/50 hover:bg-red-100 rounded-lg transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                                </div>
+                            </div>
+                        `);
+                    });
+
+                    // Render List Program di Tab Pengaturan
+                    listProgramRender.innerHTML = '';
+                    if(data.settings.program.length === 0) listProgramRender.innerHTML = `<div class="text-xs text-slate-400 py-2">Belum ada program terdaftar.</div>`;
+                    data.settings.program.forEach(item => {
+                        const safeItem = item.replace(/'/g, "\\'");
+                        listProgramRender.insertAdjacentHTML('beforeend', `
+                            <div class="flex justify-between items-center p-3.5 bg-slate-50 border border-slate-100 rounded-xl mb-2 hover:bg-slate-100 transition-colors">
+                                <span class="text-sm font-semibold text-slate-700">${item}</span>
+                                <div class="flex space-x-2">
+                                    <button onclick="openModal('edit', 'program', '${safeItem}')" type="button" class="p-2 text-blue-500 bg-blue-100/50 hover:bg-blue-100 rounded-lg transition-colors"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
+                                    <button onclick="openModal('delete', 'program', '${safeItem}')" type="button" class="p-2 text-red-500 bg-red-100/50 hover:bg-red-100 rounded-lg transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                                </div>
+                            </div>
+                        `);
+                    });
                 }
 
                 // Render Chart Per Program
