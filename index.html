@@ -174,6 +174,12 @@
                 </h2>
                 
                 <form id="donationForm" class="space-y-5">
+                    <!-- Tanggal Pemasukan -->
+                    <div>
+                        <label class="block text-sm font-medium text-slate-600 mb-1">Tanggal Pemasukan</label>
+                        <input type="date" id="tglDonasi" required class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-ashqaf/50 focus:border-ashqaf transition-colors">
+                    </div>
+
                     <!-- Divisi -->
                     <div>
                         <label class="block text-sm font-medium text-slate-600 mb-1">Divisi Fundraising</label>
@@ -271,6 +277,12 @@
                 
                 <form id="penarikanForm" class="space-y-5 relative z-10">
                     
+                    <!-- Tanggal Pengeluaran -->
+                    <div>
+                        <label class="block text-sm font-medium text-slate-600 mb-1">Tanggal Pengeluaran</label>
+                        <input type="date" id="tglPenarikan" required class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500 transition-colors">
+                    </div>
+
                     <!-- Nama Penarik -->
                     <div>
                         <label class="block text-sm font-medium text-slate-600 mb-1">Nama Petugas Penarik / PIC</label>
@@ -555,6 +567,14 @@
         let uploadedPenarikanFileName = "";
         let uploadedPenarikanMimeType = "";
         let globalTransactions = []; // Store all transactions for the modal
+
+        // Helper untuk set default tanggal hari ini (Format YYYY-MM-DD)
+        function getTodayDateString() {
+            const tzoffset = (new Date()).getTimezoneOffset() * 60000;
+            return (new Date(Date.now() - tzoffset)).toISOString().split('T')[0];
+        }
+        document.getElementById('tglDonasi').value = getTodayDateString();
+        document.getElementById('tglPenarikan').value = getTodayDateString();
 
         // PWA Service Worker Registration
         if ('serviceWorker' in navigator) {
@@ -868,7 +888,7 @@
             }
             loadingOverlay.classList.remove('hidden');
             const payload = {
-                jenis: "donasi", divisi: document.getElementById('divisi').value, petugas: document.getElementById('petugas').value,
+                jenis: "donasi", tanggal: document.getElementById('tglDonasi').value, divisi: document.getElementById('divisi').value, petugas: document.getElementById('petugas').value,
                 donatur: document.getElementById('donatur').value || "Anonim", kontak: document.getElementById('kontak').value || "-",
                 nominal: parseInt(document.getElementById('nominalRaw').value), metode: document.getElementById('metode').value,
                 alokasi: document.getElementById('alokasi').value, base64: base64String, filename: uploadedFileName, mimeType: uploadedMimeType
@@ -877,6 +897,7 @@
                 await fetch(GAS_WEB_APP_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 showToast("Alhamdulillah, Pemasukan berhasil dicatat!");
                 document.getElementById('donationForm').reset();
+                document.getElementById('tglDonasi').value = getTodayDateString(); // Reset tgl kembali ke hari ini
                 fileNameDisplay.textContent = "Klik untuk upload foto/PDF"; base64String = ""; switchTab('dashboard');
             } catch (error) { showToast("Gagal jaringan: " + error.message, "error"); } finally { loadingOverlay.classList.add('hidden'); }
         });
@@ -889,7 +910,7 @@
             }
             loadingOverlay.classList.remove('hidden');
             const payload = {
-                jenis: "penarikan", penarik: document.getElementById('picPenarikan').value, divisi: document.getElementById('divisiPenarikan').value,
+                jenis: "penarikan", tanggal: document.getElementById('tglPenarikan').value, penarik: document.getElementById('picPenarikan').value, divisi: document.getElementById('divisiPenarikan').value,
                 nominal: parseInt(document.getElementById('nominalPenarikanRaw').value), alokasi: document.getElementById('alokasiPenarikan').value,
                 keterangan: document.getElementById('keteranganPenarikan').value, base64: base64PenarikanString, filename: uploadedPenarikanFileName, mimeType: uploadedPenarikanMimeType
             };
@@ -897,6 +918,7 @@
                 await fetch(GAS_WEB_APP_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 showToast("Data pengeluaran berhasil direkam!");
                 document.getElementById('penarikanForm').reset();
+                document.getElementById('tglPenarikan').value = getTodayDateString(); // Reset tgl kembali ke hari ini
                 fileNamePenarikanDisplay.textContent = "Klik untuk upload foto nota"; base64PenarikanString = ""; switchTab('dashboard');
             } catch (error) { showToast("Gagal jaringan: " + error.message, "error"); } finally { loadingOverlay.classList.add('hidden'); }
         });
