@@ -53,26 +53,6 @@
         <!-- ================= VIEW: DASHBOARD ================= -->
         <section id="view-dashboard" class="hidden animate-fade-in">
             
-            <!-- Filter Tanggal -->
-            <div class="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 mb-4 flex items-end space-x-2 relative z-10">
-                <div class="flex-1">
-                    <label class="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Mulai Tgl</label>
-                    <input type="date" id="filterStart" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-ashqaf text-sm font-medium text-slate-700">
-                </div>
-                <div class="flex-1">
-                    <label class="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Sampai Tgl</label>
-                    <input type="date" id="filterEnd" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-ashqaf text-sm font-medium text-slate-700">
-                </div>
-                <div class="flex space-x-2">
-                    <button id="btnFilter" class="bg-ashqaf hover:bg-ashqaf-dark text-white p-3 rounded-xl shadow-md transition-colors flex items-center justify-center">
-                        <i data-lucide="filter" class="w-4 h-4"></i>
-                    </button>
-                    <button id="btnResetFilter" class="bg-slate-200 hover:bg-slate-300 text-slate-600 p-3 rounded-xl shadow-sm transition-colors hidden flex items-center justify-center">
-                        <i data-lucide="x" class="w-4 h-4"></i>
-                    </button>
-                </div>
-            </div>
-
             <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col items-center justify-center text-center relative overflow-hidden mb-4">
                 <div class="absolute top-0 right-0 w-24 h-24 bg-ashqaf/5 rounded-bl-full"></div>
                 <p id="labelTotalSaldo" class="text-sm font-medium text-slate-500 mb-1">Total Saldo Kas</p>
@@ -97,12 +77,32 @@
             </div>
 
             <div class="grid grid-cols-1 gap-4 mt-6">
+                <!-- Total Kas Per Program -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
+                    <h3 class="text-sm font-bold text-slate-700 mb-4 flex items-center">
+                        <i data-lucide="wallet" class="w-4 h-4 mr-2 text-ashqaf"></i> Total Kas per Program
+                    </h3>
+                    <div id="dashKasPerProgram" class="space-y-2">
+                        <div class="text-center py-2 text-slate-400 text-xs animate-pulse">Memuat data...</div>
+                    </div>
+                </div>
+
                 <!-- Per Program -->
                 <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
                     <h3 class="text-sm font-bold text-slate-700 mb-4 flex items-center">
-                        <i data-lucide="pie-chart" class="w-4 h-4 mr-2 text-ashqaf"></i> Donasi per Program
+                        <i data-lucide="pie-chart" class="w-4 h-4 mr-2 text-emerald-500"></i> Donasi per Program
                     </h3>
                     <div id="dashPerProgram" class="space-y-4">
+                        <div class="text-center py-2 text-slate-400 text-xs animate-pulse">Memuat data...</div>
+                    </div>
+                </div>
+                
+                <!-- Per Divisi (FIX: Dikembalikan agar JS tidak error null) -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
+                    <h3 class="text-sm font-bold text-slate-700 mb-4 flex items-center">
+                        <i data-lucide="bar-chart-2" class="w-4 h-4 mr-2 text-blue-500"></i> Donasi per Divisi
+                    </h3>
+                    <div id="dashPerDivisi" class="space-y-4">
                         <div class="text-center py-2 text-slate-400 text-xs animate-pulse">Memuat data...</div>
                     </div>
                 </div>
@@ -116,26 +116,6 @@
                         <div class="text-center py-2 text-slate-400 text-xs animate-pulse">Memuat data...</div>
                     </div>
                 </div>
-
-                <!-- Total Kas Per Program -->
-                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
-                    <h3 class="text-sm font-bold text-slate-700 mb-4 flex items-center">
-                        <i data-lucide="wallet" class="w-4 h-4 mr-2 text-ashqaf"></i> Total Kas per Program
-                    </h3>
-                    <div id="dashKasPerProgram" class="space-y-2">
-                        <div class="text-center py-2 text-slate-400 text-xs animate-pulse">Memuat data...</div>
-                    </div>
-                </div>
-
-                <!-- Per Divisi -->
-                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
-                    <h3 class="text-sm font-bold text-slate-700 mb-4 flex items-center">
-                        <i data-lucide="bar-chart-2" class="w-4 h-4 mr-2 text-ashqaf"></i> Donasi per Divisi
-                    </h3>
-                    <div id="dashPerDivisi" class="space-y-4">
-                        <div class="text-center py-2 text-slate-400 text-xs animate-pulse">Memuat data...</div>
-                    </div>
-                </div>
             </div>
 
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 mt-6 mb-6">
@@ -143,41 +123,27 @@
                     <h3 class="text-sm font-bold text-slate-700 flex items-center">
                         <i data-lucide="clock" class="w-4 h-4 mr-2 text-ashqaf"></i> 5 Transaksi Terakhir
                     </h3>
-                    <button onclick="switchTab('transaksi')" class="text-xs font-semibold text-ashqaf hover:underline">Lihat Semua</button>
+                    <button onclick="switchTab('riwayat')" class="text-xs font-semibold text-ashqaf hover:underline">Lihat Semua</button>
                 </div>
                 <div id="mixedHistory" class="space-y-3">
                     <div class="text-center py-4 text-slate-400 text-xs animate-pulse">Memuat riwayat...</div>
-                </div>
-            </div>
-            <div class="h-4"></div> <!-- spacer -->
-        </section>
-
-        <!-- ================= VIEW: TRANSAKSI (RIWAYAT) ================= -->
-        <section id="view-transaksi" class="hidden animate-fade-in">
-            <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 mb-6">
-                <h2 class="text-lg font-semibold text-slate-700 mb-2 flex items-center">
-                    <i data-lucide="receipt" class="w-5 h-5 mr-2 text-ashqaf"></i> Riwayat Transaksi
-                </h2>
-                <p class="text-xs text-slate-500 mb-5">Daftar transaksi berdasarkan rentang tanggal yang difilter di Dashboard.</p>
-                
-                <div id="listTransaksiFull" class="space-y-3">
-                    <div class="text-center py-4 text-slate-400 text-xs animate-pulse">Memuat data transaksi...</div>
                 </div>
             </div>
         </section>
 
         <!-- ================= VIEW: INPUT DONASI ================= -->
         <section id="view-donasi" class="hidden animate-fade-in">
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 mb-6">
-                <h2 class="text-lg font-semibold text-slate-700 mb-6 flex items-center">
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 mb-6 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-50 rounded-bl-full"></div>
+                <h2 class="text-lg font-semibold text-slate-700 mb-6 flex items-center relative z-10">
                     <i data-lucide="download" class="w-5 h-5 mr-2 text-ashqaf"></i> Form Pemasukan (Donasi)
                 </h2>
                 
-                <form id="donationForm" class="space-y-5">
+                <form id="donationForm" class="space-y-5 relative z-10">
                     <!-- Tanggal Pemasukan -->
                     <div>
                         <label class="block text-sm font-medium text-slate-600 mb-1">Tanggal Pemasukan</label>
-                        <input type="date" id="tglDonasi" required class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-ashqaf/50 focus:border-ashqaf transition-colors">
+                        <input type="date" id="tglDonasi" required class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-ashqaf/50 focus:border-ashqaf transition-colors text-slate-700">
                     </div>
 
                     <!-- Divisi -->
@@ -280,7 +246,7 @@
                     <!-- Tanggal Pengeluaran -->
                     <div>
                         <label class="block text-sm font-medium text-slate-600 mb-1">Tanggal Pengeluaran</label>
-                        <input type="date" id="tglPenarikan" required class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500 transition-colors">
+                        <input type="date" id="tglPenarikan" required class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500 transition-colors text-slate-700">
                     </div>
 
                     <!-- Nama Penarik -->
@@ -342,16 +308,47 @@
             </div>
         </section>
 
+        <!-- ================= VIEW: RIWAYAT TRANSAKSI ================= -->
+        <section id="view-riwayat" class="hidden animate-fade-in">
+            <!-- Filter Tanggal -->
+            <div class="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 mb-4 flex items-end space-x-2 relative z-10">
+                <div class="flex-1">
+                    <label class="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Mulai Tgl</label>
+                    <input type="date" id="filterStart" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-ashqaf text-sm font-medium text-slate-700">
+                </div>
+                <div class="flex-1">
+                    <label class="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Sampai Tgl</label>
+                    <input type="date" id="filterEnd" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-ashqaf text-sm font-medium text-slate-700">
+                </div>
+                <div class="flex space-x-2">
+                    <button id="btnFilter" class="bg-ashqaf hover:bg-ashqaf-dark text-white p-3 rounded-xl shadow-md transition-colors flex items-center justify-center">
+                        <i data-lucide="filter" class="w-4 h-4"></i>
+                    </button>
+                    <button id="btnResetFilter" class="bg-slate-200 hover:bg-slate-300 text-slate-600 p-3 rounded-xl shadow-sm transition-colors hidden flex items-center justify-center">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 mb-6">
+                <h3 class="text-sm font-bold text-slate-700 mb-4 flex items-center">
+                    <i data-lucide="list" class="w-4 h-4 mr-2 text-ashqaf"></i> Daftar Semua Transaksi
+                </h3>
+                <p class="text-xs text-slate-500 mb-4">* Klik pada kartu untuk melihat rincian.</p>
+                <div id="fullHistoryList" class="space-y-3">
+                    <div class="text-center py-4 text-slate-400 text-xs animate-pulse">Memuat riwayat...</div>
+                </div>
+            </div>
+        </section>
+
         <!-- ================= VIEW: PENGATURAN ================= -->
         <section id="view-pengaturan" class="hidden animate-fade-in space-y-4">
-            
             <!-- Pengaturan Program -->
             <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden mb-4">
                 <div class="absolute top-0 right-0 w-24 h-24 bg-slate-50 rounded-bl-full"></div>
                 <h2 class="text-lg font-semibold text-slate-700 mb-6 flex items-center relative z-10">
                     <i data-lucide="pie-chart" class="w-5 h-5 mr-2 text-slate-500"></i> Master Program
                 </h2>
-                
                 <form id="settingProgramForm" class="space-y-4 relative z-10 mb-6">
                     <div class="flex space-x-2">
                         <input type="text" id="newProgram" required class="flex-1 px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-ashqaf/50 focus:border-ashqaf transition-colors" placeholder="Tambah Program Baru...">
@@ -360,9 +357,8 @@
                         </button>
                     </div>
                 </form>
-
                 <div id="listProgramRender" class="space-y-2 relative z-10">
-                    <div class="text-center py-4 text-slate-400 text-xs animate-pulse">Memuat daftar program...</div>
+                    <div class="text-center py-4 text-slate-400 text-xs animate-pulse">Memuat daftar...</div>
                 </div>
             </div>
 
@@ -372,7 +368,6 @@
                 <h2 class="text-lg font-semibold text-slate-700 mb-6 flex items-center relative z-10">
                     <i data-lucide="users" class="w-5 h-5 mr-2 text-slate-500"></i> Master Divisi
                 </h2>
-                
                 <form id="settingDivisiForm" class="space-y-4 relative z-10 mb-6">
                     <div class="flex space-x-2">
                         <input type="text" id="newDivisi" required class="flex-1 px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-ashqaf/50 focus:border-ashqaf transition-colors" placeholder="Tambah Divisi Baru...">
@@ -381,9 +376,8 @@
                         </button>
                     </div>
                 </form>
-
                 <div id="listDivisiRender" class="space-y-2 relative z-10">
-                    <div class="text-center py-4 text-slate-400 text-xs animate-pulse">Memuat daftar divisi...</div>
+                    <div class="text-center py-4 text-slate-400 text-xs animate-pulse">Memuat daftar...</div>
                 </div>
             </div>
 
@@ -393,7 +387,6 @@
                 <h2 class="text-lg font-semibold text-slate-700 mb-6 flex items-center relative z-10">
                     <i data-lucide="user-badge" class="w-5 h-5 mr-2 text-slate-500"></i> Master Petugas
                 </h2>
-                
                 <form id="settingPetugasForm" class="space-y-4 relative z-10 mb-6">
                     <div class="flex space-x-2">
                         <input type="text" id="newPetugas" required class="flex-1 px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-ashqaf/50 focus:border-ashqaf transition-colors" placeholder="Tambah Petugas Baru...">
@@ -402,55 +395,52 @@
                         </button>
                     </div>
                 </form>
-
                 <div id="listPetugasRender" class="space-y-2 relative z-10">
-                    <div class="text-center py-4 text-slate-400 text-xs animate-pulse">Memuat daftar petugas...</div>
+                    <div class="text-center py-4 text-slate-400 text-xs animate-pulse">Memuat daftar...</div>
                 </div>
             </div>
             
             <div class="h-4"></div> <!-- spacer -->
         </section>
-
     </main>
 
-    <!-- ================= BOTTOM NAVIGATION (5 TABS) ================= -->
-    <nav class="fixed bottom-0 w-full bg-white border-t border-slate-200 px-2 py-2 pb-safe z-50 rounded-t-3xl shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
-        <div class="max-w-md mx-auto flex justify-between items-end">
+    <!-- ================= BOTTOM NAVIGATION ================= -->
+    <nav class="fixed bottom-0 w-full bg-white border-t border-slate-200 px-4 py-3 pb-safe z-50 rounded-t-3xl shadow-[0_-4px_20px_rgba(0,0,0,0.05)] overflow-x-auto">
+        <div class="max-w-md mx-auto flex justify-between items-center min-w-[320px]">
             
-            <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn flex-1 flex flex-col items-center p-1 text-slate-400 hover:text-ashqaf transition-colors">
+            <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn flex flex-col items-center p-2 text-slate-400 hover:text-ashqaf transition-colors">
                 <i data-lucide="layout-dashboard" class="w-5 h-5 mb-1"></i>
-                <span class="text-[9px] font-semibold">Beranda</span>
+                <span class="text-[10px] font-semibold">Dashboard</span>
             </button>
             
-            <button onclick="switchTab('donasi')" id="nav-donasi" class="nav-btn flex-1 flex flex-col items-center p-1 text-slate-400 hover:text-ashqaf transition-colors">
-                <div class="bg-ashqaf/10 p-1.5 rounded-lg mb-1 border border-white">
+            <button onclick="switchTab('donasi')" id="nav-donasi" class="nav-btn flex flex-col items-center p-2 text-slate-400 hover:text-ashqaf transition-colors">
+                <div class="bg-ashqaf/10 p-2 rounded-xl mb-1 -mt-4 border-2 border-white">
                     <i data-lucide="plus-circle" class="w-5 h-5 text-ashqaf"></i>
                 </div>
-                <span class="text-[9px] font-semibold text-ashqaf">Masuk</span>
+                <span class="text-[10px] font-semibold text-ashqaf">Pemasukan</span>
             </button>
             
-            <button onclick="switchTab('penarikan')" id="nav-penarikan" class="nav-btn flex-1 flex flex-col items-center p-1 text-slate-400 hover:text-ashqaf transition-colors">
-                <div class="bg-red-50 p-1.5 rounded-lg mb-1 border border-white">
+            <button onclick="switchTab('penarikan')" id="nav-penarikan" class="nav-btn flex flex-col items-center p-2 text-slate-400 hover:text-ashqaf transition-colors">
+                <div class="bg-red-50 p-2 rounded-xl mb-1 -mt-4 border-2 border-white">
                     <i data-lucide="minus-circle" class="w-5 h-5 text-red-500"></i>
                 </div>
-                <span class="text-[9px] font-semibold text-red-500">Keluar</span>
+                <span class="text-[10px] font-semibold text-red-500">Pengeluaran</span>
             </button>
 
-            <!-- NEW TAB: TRANSAKSI -->
-            <button onclick="switchTab('transaksi')" id="nav-transaksi" class="nav-btn flex-1 flex flex-col items-center p-1 text-slate-400 hover:text-ashqaf transition-colors">
-                <i data-lucide="receipt" class="w-5 h-5 mb-1"></i>
-                <span class="text-[9px] font-semibold">Riwayat</span>
+            <button onclick="switchTab('riwayat')" id="nav-riwayat" class="nav-btn flex flex-col items-center p-2 text-slate-400 hover:text-ashqaf transition-colors">
+                <i data-lucide="history" class="w-5 h-5 mb-1"></i>
+                <span class="text-[10px] font-semibold">Riwayat</span>
             </button>
 
-            <button onclick="switchTab('pengaturan')" id="nav-pengaturan" class="nav-btn flex-1 flex flex-col items-center p-1 text-slate-400 hover:text-ashqaf transition-colors">
+            <button onclick="switchTab('pengaturan')" id="nav-pengaturan" class="nav-btn flex flex-col items-center p-2 text-slate-400 hover:text-ashqaf transition-colors">
                 <i data-lucide="settings" class="w-5 h-5 mb-1"></i>
-                <span class="text-[9px] font-semibold">Pengaturan</span>
+                <span class="text-[10px] font-semibold">Setelan</span>
             </button>
 
         </div>
     </nav>
 
-    <!-- Custom Modal for Edit/Delete Settings -->
+    <!-- Custom Modal (Dialog Box untuk Edit/Hapus Pengaturan) -->
     <div id="customModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-[250] px-4 transition-opacity duration-300 opacity-0">
         <div class="bg-white p-6 rounded-3xl shadow-2xl w-full max-w-sm transform transition-all scale-95 duration-300" id="modalContent">
             <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-4 mx-auto" id="modalIconContainer">
@@ -458,9 +448,7 @@
             </div>
             <h3 id="modalTitle" class="text-lg font-bold text-slate-800 mb-2 text-center">Judul Modal</h3>
             <p id="modalDesc" class="text-sm text-slate-500 mb-5 text-center">Deskripsi modal</p>
-            
             <input type="text" id="modalInput" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-ashqaf/50 focus:border-ashqaf transition-colors mb-5 hidden text-center font-medium">
-            
             <div class="flex space-x-3">
                 <button onclick="closeModal()" class="flex-1 py-3.5 rounded-xl font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors">Batal</button>
                 <button id="modalConfirmBtn" class="flex-1 py-3.5 rounded-xl font-bold text-white shadow-lg transition-all">Simpan</button>
@@ -468,69 +456,31 @@
         </div>
     </div>
 
-    <!-- NEW: Modal for Transaction Details -->
-    <div id="transactionDetailModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-end sm:items-center justify-center z-[260] transition-opacity duration-300 opacity-0">
-        <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-md transform transition-all translate-y-full sm:translate-y-0 sm:scale-95 duration-300 h-[85vh] sm:h-auto overflow-y-auto" id="transactionModalContent">
+    <!-- Modal Pop-up Rincian Transaksi -->
+    <div id="transactionModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center z-[300] px-4 transition-opacity duration-300 opacity-0">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md transform transition-all scale-95 duration-300 overflow-hidden flex flex-col max-h-[90vh]" id="transactionModalContent">
             
-            <!-- Handle for mobile drag -->
-            <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mt-4 mb-2 sm:hidden"></div>
-            
-            <div class="p-6 relative">
-                <button onclick="closeTransactionDetail()" class="absolute top-4 right-4 p-2 bg-slate-100 text-slate-500 rounded-full hover:bg-slate-200 transition-colors">
+            <div class="p-5 flex justify-between items-center border-b border-slate-100" id="txModalHeader">
+                <h3 class="font-bold text-lg text-slate-800 flex items-center">
+                    <i data-lucide="file-text" class="w-5 h-5 mr-2"></i> Rincian Transaksi
+                </h3>
+                <button onclick="closeTransactionModal()" class="p-2 bg-slate-100 hover:bg-slate-200 rounded-full text-slate-500 transition-colors">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
-                
-                <div class="flex items-center mb-6">
-                    <div id="tdIconBg" class="w-12 h-12 rounded-full flex items-center justify-center mr-4">
-                        <i id="tdIcon" data-lucide="receipt" class="w-6 h-6"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-bold text-slate-800" id="tdTitle">Detail Transaksi</h3>
-                        <p class="text-xs font-medium text-slate-500" id="tdDate">01 Jan 2026, 12:00</p>
-                    </div>
-                </div>
-
-                <div class="bg-slate-50 rounded-2xl p-5 mb-6 border border-slate-100 text-center">
-                    <p class="text-xs text-slate-500 font-semibold mb-1 uppercase tracking-wider">Total Nominal</p>
-                    <h2 class="text-3xl font-black tracking-tight" id="tdNominal">Rp 0</h2>
-                </div>
-
-                <div class="space-y-4">
-                    <div class="flex justify-between border-b border-slate-100 pb-3">
-                        <span class="text-sm text-slate-500">Jenis Transaksi</span>
-                        <span class="text-sm font-semibold text-slate-700" id="tdType">Pemasukan</span>
-                    </div>
-                    <div class="flex justify-between border-b border-slate-100 pb-3">
-                        <span class="text-sm text-slate-500">Divisi</span>
-                        <span class="text-sm font-semibold text-slate-700 text-right w-1/2" id="tdDivisi">-</span>
-                    </div>
-                    <div class="flex justify-between border-b border-slate-100 pb-3">
-                        <span class="text-sm text-slate-500" id="tdLabelPerson">Petugas/Donatur</span>
-                        <span class="text-sm font-semibold text-slate-700 text-right w-1/2" id="tdPerson">-</span>
-                    </div>
-                    <div class="flex justify-between border-b border-slate-100 pb-3">
-                        <span class="text-sm text-slate-500">Alokasi Program</span>
-                        <span class="text-sm font-semibold text-slate-700 text-right w-1/2" id="tdAlokasi">-</span>
-                    </div>
-                    
-                    <!-- Dynamic fields based on type -->
-                    <div id="tdExtraField" class="flex justify-between border-b border-slate-100 pb-3 hidden">
-                        <span class="text-sm text-slate-500" id="tdExtraLabel">Metode / Ket</span>
-                        <span class="text-sm font-semibold text-slate-700 text-right w-1/2" id="tdExtraValue">-</span>
-                    </div>
-                </div>
-
-                <div class="mt-6 pt-4 text-center">
-                    <a href="#" id="tdUrlBukti" target="_blank" class="inline-flex items-center justify-center px-4 py-2.5 bg-blue-50 text-blue-600 rounded-xl text-sm font-bold hover:bg-blue-100 transition-colors">
-                        <i data-lucide="external-link" class="w-4 h-4 mr-2"></i> Lihat Foto Bukti / Nota
-                    </a>
-                </div>
+            </div>
+            
+            <div class="p-6 overflow-y-auto" id="txModalBody">
+                <!-- Konten dinamis akan masuk ke sini via JavaScript -->
+            </div>
+            
+            <div class="p-4 bg-slate-50 border-t border-slate-100 flex justify-end">
+                <button onclick="closeTransactionModal()" class="px-6 py-2.5 bg-slate-800 text-white font-semibold rounded-xl hover:bg-slate-900 transition-colors">Tutup</button>
             </div>
         </div>
     </div>
 
     <!-- Overlay Loading Spinner -->
-    <div id="loadingOverlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-[300]">
+    <div id="loadingOverlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-[400]">
         <div class="bg-white p-6 rounded-2xl shadow-xl flex flex-col items-center">
             <i data-lucide="loader-2" class="w-10 h-10 text-ashqaf animate-spin mb-4"></i>
             <p class="text-slate-700 font-medium">Memproses data...</p>
@@ -547,11 +497,13 @@
         const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyaPqHTbpM3rj45NBqde85TTVXIXJlskA0yZQI7PDbsoofXDn1HD4lGr4jEmIkqriiL/exec";
         // ===========================================
 
+        let globalTransactions = []; // Menyimpan data transaksi agar bisa dibuka di popup modal
+
         // DOM Elements
         const viewDashboard = document.getElementById('view-dashboard');
-        const viewTransaksi = document.getElementById('view-transaksi'); // NEW
         const viewDonasi = document.getElementById('view-donasi');
         const viewPenarikan = document.getElementById('view-penarikan');
+        const viewRiwayat = document.getElementById('view-riwayat');
         const viewPengaturan = document.getElementById('view-pengaturan');
         const headerSubtitle = document.getElementById('headerSubtitle');
         const toast = document.getElementById('toast');
@@ -559,22 +511,9 @@
         const toastIcon = document.getElementById('toastIcon');
         const loadingOverlay = document.getElementById('loadingOverlay');
 
-        // State variables
-        let base64String = "";
-        let uploadedFileName = "";
-        let uploadedMimeType = "";
-        let base64PenarikanString = "";
-        let uploadedPenarikanFileName = "";
-        let uploadedPenarikanMimeType = "";
-        let globalTransactions = []; // Store all transactions for the modal
-
-        // Helper untuk set default tanggal hari ini (Format YYYY-MM-DD)
-        function getTodayDateString() {
-            const tzoffset = (new Date()).getTimezoneOffset() * 60000;
-            return (new Date(Date.now() - tzoffset)).toISOString().split('T')[0];
-        }
-        document.getElementById('tglDonasi').value = getTodayDateString();
-        document.getElementById('tglPenarikan').value = getTodayDateString();
+        // State variables File Upload
+        let base64String = "", uploadedFileName = "", uploadedMimeType = "";
+        let base64PenarikanString = "", uploadedPenarikanFileName = "", uploadedPenarikanMimeType = "";
 
         // PWA Service Worker Registration
         if ('serviceWorker' in navigator) {
@@ -602,7 +541,16 @@
             }, 3500);
         }
 
-        // --- Custom Modal Logic Settings ---
+        // Set default Date (Hari Ini) pada input tanggal
+        function setDefaultDates() {
+            const today = new Date().toISOString().split('T')[0];
+            const tglDonasi = document.getElementById('tglDonasi');
+            const tglPenarikan = document.getElementById('tglPenarikan');
+            if(tglDonasi && !tglDonasi.value) tglDonasi.value = today;
+            if(tglPenarikan && !tglPenarikan.value) tglPenarikan.value = today;
+        }
+
+        // --- Custom Modal Logic (Pengaturan Master Data) ---
         let currentModalAction = null, currentModalType = null, currentModalValue = null;
 
         function openModal(action, type, value) {
@@ -681,94 +629,106 @@
                 loadingOverlay.classList.add('hidden');
             }
         }
+        
+        // --- Modal Detail Transaksi Logic ---
+        function openTransactionDetail(id) {
+            const item = globalTransactions.find(t => t.id === id);
+            if(!item) return;
 
-        // --- NEW: Transaction Detail Modal Logic ---
-        function openTransactionDetail(index) {
-            const tr = globalTransactions[index];
-            if(!tr) return;
-
-            const modal = document.getElementById('transactionDetailModal');
+            const modal = document.getElementById('transactionModal');
             const content = document.getElementById('transactionModalContent');
+            const body = document.getElementById('txModalBody');
+            const header = document.getElementById('txModalHeader');
             
-            // Populate Data
-            const isMasuk = tr.type === 'masuk';
-            const rawDate = new Date(tr.timestamp);
-            const dateStr = !isNaN(rawDate.getTime()) ? rawDate.toLocaleString('id-ID', {day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'}) : tr.timestamp;
+            const isMasuk = item.type === 'masuk';
+            const color = isMasuk ? "text-emerald-600" : "text-red-500";
+            const bgHeader = isMasuk ? "bg-emerald-50" : "bg-red-50";
             
-            document.getElementById('tdDate').textContent = dateStr;
-            document.getElementById('tdNominal').textContent = formatRupiah(tr.nominal);
-            document.getElementById('tdNominal').className = `text-3xl font-black tracking-tight ${isMasuk ? 'text-emerald-600' : 'text-red-500'}`;
-            
-            document.getElementById('tdType').textContent = isMasuk ? 'Pemasukan (Donasi)' : 'Pengeluaran Kas';
-            document.getElementById('tdDivisi').textContent = tr.divisi || '-';
-            document.getElementById('tdAlokasi').textContent = tr.alokasi || '-';
-            
-            // Dynamic Icons & Fields
-            const iconBg = document.getElementById('tdIconBg');
-            const icon = document.getElementById('tdIcon');
-            const extraField = document.getElementById('tdExtraField');
-            
+            const tglObj = new Date(item.timestamp);
+            const tglString = isNaN(tglObj.getTime()) ? "-" : tglObj.toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute:'2-digit'});
+
+            let detailHtml = `
+                <div class="text-center mb-6">
+                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-2">${isMasuk ? 'Pemasukan Donasi' : 'Pengeluaran Kas'}</p>
+                    <h2 class="text-4xl font-black ${color} tracking-tight">${formatRupiah(item.nominal)}</h2>
+                    <p class="text-sm text-slate-500 mt-2 font-medium">${tglString}</p>
+                </div>
+                <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 space-y-4">
+            `;
+
             if(isMasuk) {
-                iconBg.className = "w-12 h-12 rounded-full flex items-center justify-center mr-4 bg-emerald-100";
-                icon.setAttribute('data-lucide', 'arrow-down-left');
-                icon.className = "w-6 h-6 text-emerald-600";
-                
-                document.getElementById('tdLabelPerson').textContent = "Donatur / Petugas";
-                document.getElementById('tdPerson').textContent = `${tr.donatur} / ${tr.petugas}`;
-                
-                extraField.classList.remove('hidden');
-                document.getElementById('tdExtraLabel').textContent = "Metode Pembayaran";
-                document.getElementById('tdExtraValue').textContent = tr.metode || '-';
+                detailHtml += `
+                    <div class="flex justify-between items-start border-b border-slate-200 pb-3">
+                        <span class="text-xs font-medium text-slate-500">Nama Donatur</span>
+                        <span class="text-sm font-bold text-slate-800 text-right">${item.donatur || '-'}</span>
+                    </div>
+                    <div class="flex justify-between items-start border-b border-slate-200 pb-3">
+                        <span class="text-xs font-medium text-slate-500">Petugas (PIC)</span>
+                        <span class="text-sm font-bold text-slate-800 text-right">${item.petugas || '-'}</span>
+                    </div>
+                    <div class="flex justify-between items-start border-b border-slate-200 pb-3">
+                        <span class="text-xs font-medium text-slate-500">Metode Bayar</span>
+                        <span class="text-sm font-bold text-slate-800 text-right">${item.metode || '-'}</span>
+                    </div>
+                `;
             } else {
-                iconBg.className = "w-12 h-12 rounded-full flex items-center justify-center mr-4 bg-red-100";
-                icon.setAttribute('data-lucide', 'arrow-up-right');
-                icon.className = "w-6 h-6 text-red-500";
-                
-                document.getElementById('tdLabelPerson').textContent = "Nama Penarik (PIC)";
-                document.getElementById('tdPerson').textContent = tr.penarik;
-                
-                extraField.classList.remove('hidden');
-                document.getElementById('tdExtraLabel').textContent = "Keterangan";
-                document.getElementById('tdExtraValue').textContent = tr.keterangan || '-';
+                detailHtml += `
+                    <div class="flex justify-between items-start border-b border-slate-200 pb-3">
+                        <span class="text-xs font-medium text-slate-500">Penarik (PIC)</span>
+                        <span class="text-sm font-bold text-slate-800 text-right">${item.penarik || '-'}</span>
+                    </div>
+                    <div class="flex justify-between items-start border-b border-slate-200 pb-3">
+                        <span class="text-xs font-medium text-slate-500">Keterangan</span>
+                        <span class="text-sm font-bold text-slate-800 text-right max-w-[150px] break-words">${item.keterangan || '-'}</span>
+                    </div>
+                `;
             }
 
-            // Link Bukti
-            const btnBukti = document.getElementById('tdUrlBukti');
-            if(tr.urlBukti && tr.urlBukti.includes('http')) {
-                btnBukti.href = tr.urlBukti;
-                btnBukti.style.display = 'inline-flex';
-            } else {
-                btnBukti.style.display = 'none';
-            }
+            detailHtml += `
+                    <div class="flex justify-between items-start border-b border-slate-200 pb-3">
+                        <span class="text-xs font-medium text-slate-500">Divisi Terkait</span>
+                        <span class="text-sm font-bold text-slate-800 text-right">${item.divisi || '-'}</span>
+                    </div>
+                    <div class="flex justify-between items-start border-b border-slate-200 pb-3">
+                        <span class="text-xs font-medium text-slate-500">Program Alokasi</span>
+                        <span class="text-sm font-bold text-slate-800 text-right">${item.alokasi || '-'}</span>
+                    </div>
+                    <div class="flex justify-between items-center pt-1">
+                        <span class="text-xs font-medium text-slate-500">Bukti / Nota</span>
+                        ${(item.urlBukti && item.urlBukti.length > 5 && item.urlBukti !== "-") 
+                            ? `<a href="${item.urlBukti}" target="_blank" class="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg hover:bg-blue-100 transition-colors flex items-center"><i data-lucide="external-link" class="w-3 h-3 mr-1"></i> Lihat File</a>` 
+                            : `<span class="text-xs font-semibold text-slate-400 bg-slate-100 px-3 py-1.5 rounded-lg">Tidak ada foto</span>`}
+                    </div>
+                </div>
+            `;
 
+            body.innerHTML = detailHtml;
+            header.className = `p-5 flex justify-between items-center border-b border-slate-100 ${bgHeader}`;
             lucide.createIcons();
-            
-            // Show with animation
+
             modal.classList.remove('hidden');
             setTimeout(() => {
                 modal.classList.remove('opacity-0');
-                content.classList.remove('translate-y-full', 'sm:scale-95');
-                content.classList.add('translate-y-0', 'sm:scale-100');
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
             }, 10);
         }
 
-        function closeTransactionDetail() {
-            const modal = document.getElementById('transactionDetailModal');
+        function closeTransactionModal() {
+            const modal = document.getElementById('transactionModal');
             const content = document.getElementById('transactionModalContent');
-            
             modal.classList.add('opacity-0');
-            content.classList.remove('translate-y-0', 'sm:scale-100');
-            content.classList.add('translate-y-full', 'sm:scale-95');
-            
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
             setTimeout(() => { modal.classList.add('hidden'); }, 300);
         }
 
         // Tab Navigation Logic
         function switchTab(tab) {
             viewDashboard.classList.add('hidden');
-            viewTransaksi.classList.add('hidden');
             viewDonasi.classList.add('hidden');
             viewPenarikan.classList.add('hidden');
+            viewRiwayat.classList.add('hidden');
             viewPengaturan.classList.add('hidden');
             
             document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -780,19 +740,24 @@
                 document.getElementById('nav-dashboard').classList.replace('text-slate-400', 'text-ashqaf');
                 headerSubtitle.textContent = "Ringkasan Keuangan";
                 fetchDashboardData();
-            }
-            else if(tab === 'transaksi') {
-                viewTransaksi.classList.remove('hidden');
-                document.getElementById('nav-transaksi').classList.replace('text-slate-400', 'text-ashqaf');
-                headerSubtitle.textContent = "Semua Riwayat Transaksi";
-            }
+            } 
             else if(tab === 'donasi') {
                 viewDonasi.classList.remove('hidden');
+                document.getElementById('nav-donasi').classList.replace('text-slate-400', 'text-ashqaf');
                 headerSubtitle.textContent = "Input Data Pemasukan";
+                setDefaultDates();
             }
             else if(tab === 'penarikan') {
                 viewPenarikan.classList.remove('hidden');
+                document.getElementById('nav-penarikan').classList.replace('text-slate-400', 'text-ashqaf');
                 headerSubtitle.textContent = "Input Data Pengeluaran";
+                setDefaultDates();
+            }
+            else if(tab === 'riwayat') {
+                viewRiwayat.classList.remove('hidden');
+                document.getElementById('nav-riwayat').classList.replace('text-slate-400', 'text-ashqaf');
+                headerSubtitle.textContent = "Riwayat Transaksi";
+                fetchDashboardData();
             }
             else if(tab === 'pengaturan') {
                 viewPengaturan.classList.remove('hidden');
@@ -806,29 +771,22 @@
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
         }
 
-        // Logic Masking Input Angka (Donasi)
+        // Logic Masking Input Angka (Donasi & Penarikan)
         document.getElementById('nominalDisplay').addEventListener('input', function(e) {
             let value = this.value.replace(/[^0-9]/g, '');
-            if (value === '') {
-                document.getElementById('nominalRaw').value = '';
-                this.value = ''; return;
-            }
+            if (value === '') { document.getElementById('nominalRaw').value = ''; this.value = ''; return; }
             document.getElementById('nominalRaw').value = value;
             this.value = formatRupiah(value).replace('Rp', '').trim();
         });
 
-        // Logic Masking Input Angka (Penarikan)
         document.getElementById('nominalPenarikanDisplay').addEventListener('input', function(e) {
             let value = this.value.replace(/[^0-9]/g, '');
-            if (value === '') {
-                document.getElementById('nominalPenarikanRaw').value = '';
-                this.value = ''; return;
-            }
+            if (value === '') { document.getElementById('nominalPenarikanRaw').value = ''; this.value = ''; return; }
             document.getElementById('nominalPenarikanRaw').value = value;
             this.value = formatRupiah(value).replace('Rp', '').trim();
         });
 
-        // Logic File Upload to Base64 (Donasi)
+        // Logic File Upload to Base64
         const fileInput = document.getElementById('bukti');
         const fileNameDisplay = document.getElementById('fileNameDisplay');
         fileInput.addEventListener('change', (e) => {
@@ -848,7 +806,6 @@
             }
         });
 
-        // Logic File Upload Penarikan
         const fileInputPenarikan = document.getElementById('buktiPenarikan');
         const fileNamePenarikanDisplay = document.getElementById('fileNamePenarikanDisplay');
         if (fileInputPenarikan) {
@@ -883,21 +840,19 @@
         // ================= SUBMIT DONASI (PEMASUKAN) =================
         document.getElementById('donationForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            if(!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("GANTI_DENGAN")) {
-                showToast("URL Web App belum dikonfigurasi!", "error"); return;
-            }
+            if(!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("GANTI_DENGAN")) { showToast("URL Web App belum dikonfigurasi!", "error"); return; }
             loadingOverlay.classList.remove('hidden');
             const payload = {
-                jenis: "donasi", tanggal: document.getElementById('tglDonasi').value, divisi: document.getElementById('divisi').value, petugas: document.getElementById('petugas').value,
-                donatur: document.getElementById('donatur').value || "Anonim", kontak: document.getElementById('kontak').value || "-",
-                nominal: parseInt(document.getElementById('nominalRaw').value), metode: document.getElementById('metode').value,
-                alokasi: document.getElementById('alokasi').value, base64: base64String, filename: uploadedFileName, mimeType: uploadedMimeType
+                jenis: "donasi", tanggal: document.getElementById('tglDonasi').value, divisi: document.getElementById('divisi').value, 
+                petugas: document.getElementById('petugas').value, donatur: document.getElementById('donatur').value || "Anonim", 
+                kontak: document.getElementById('kontak').value || "-", nominal: parseInt(document.getElementById('nominalRaw').value), 
+                metode: document.getElementById('metode').value, alokasi: document.getElementById('alokasi').value, 
+                base64: base64String, filename: uploadedFileName, mimeType: uploadedMimeType
             };
             try {
                 await fetch(GAS_WEB_APP_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 showToast("Alhamdulillah, Pemasukan berhasil dicatat!");
                 document.getElementById('donationForm').reset();
-                document.getElementById('tglDonasi').value = getTodayDateString(); // Reset tgl kembali ke hari ini
                 fileNameDisplay.textContent = "Klik untuk upload foto/PDF"; base64String = ""; switchTab('dashboard');
             } catch (error) { showToast("Gagal jaringan: " + error.message, "error"); } finally { loadingOverlay.classList.add('hidden'); }
         });
@@ -905,20 +860,18 @@
         // ================= SUBMIT PENARIKAN (PENGELUARAN) =================
         document.getElementById('penarikanForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            if(!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("GANTI_DENGAN")) {
-                showToast("URL Web App belum dikonfigurasi!", "error"); return;
-            }
+            if(!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("GANTI_DENGAN")) { showToast("URL Web App belum dikonfigurasi!", "error"); return; }
             loadingOverlay.classList.remove('hidden');
             const payload = {
-                jenis: "penarikan", tanggal: document.getElementById('tglPenarikan').value, penarik: document.getElementById('picPenarikan').value, divisi: document.getElementById('divisiPenarikan').value,
-                nominal: parseInt(document.getElementById('nominalPenarikanRaw').value), alokasi: document.getElementById('alokasiPenarikan').value,
-                keterangan: document.getElementById('keteranganPenarikan').value, base64: base64PenarikanString, filename: uploadedPenarikanFileName, mimeType: uploadedPenarikanMimeType
+                jenis: "penarikan", tanggal: document.getElementById('tglPenarikan').value, penarik: document.getElementById('picPenarikan').value, 
+                divisi: document.getElementById('divisiPenarikan').value, nominal: parseInt(document.getElementById('nominalPenarikanRaw').value), 
+                alokasi: document.getElementById('alokasiPenarikan').value, keterangan: document.getElementById('keteranganPenarikan').value, 
+                base64: base64PenarikanString, filename: uploadedPenarikanFileName, mimeType: uploadedPenarikanMimeType
             };
             try {
                 await fetch(GAS_WEB_APP_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 showToast("Data pengeluaran berhasil direkam!");
                 document.getElementById('penarikanForm').reset();
-                document.getElementById('tglPenarikan').value = getTodayDateString(); // Reset tgl kembali ke hari ini
                 fileNamePenarikanDisplay.textContent = "Klik untuk upload foto nota"; base64PenarikanString = ""; switchTab('dashboard');
             } catch (error) { showToast("Gagal jaringan: " + error.message, "error"); } finally { loadingOverlay.classList.add('hidden'); }
         });
@@ -949,8 +902,9 @@
 
             document.getElementById('labelTotalSaldo').textContent = (startVal || endVal) ? "Sisa Saldo (Filter Periode)" : "Total Saldo Kas";
 
+            // Tangkap element dan lakukan null check yang kokoh
             const historyContainer = document.getElementById('mixedHistory');
-            const fullHistoryContainer = document.getElementById('listTransaksiFull');
+            const fullHistoryList = document.getElementById('fullHistoryList');
             const dashPerProgram = document.getElementById('dashPerProgram');
             const dashPerDivisi = document.getElementById('dashPerDivisi');
             const dashPengeluaranPerProgram = document.getElementById('dashPengeluaranPerProgram');
@@ -959,23 +913,21 @@
             const listProgramRender = document.getElementById('listProgramRender');
             const listPetugasRender = document.getElementById('listPetugasRender');
             
-            historyContainer.innerHTML = `<div class="text-center py-4 text-slate-400 text-xs animate-pulse">Menyinkronkan data...</div>`;
-            fullHistoryContainer.innerHTML = `<div class="text-center py-10 text-slate-400 text-sm animate-pulse">Menyinkronkan data transaksi...</div>`;
-            dashPerProgram.innerHTML = `<div class="text-center py-2 text-slate-400 text-xs animate-pulse">Memuat...</div>`;
-            dashPerDivisi.innerHTML = `<div class="text-center py-2 text-slate-400 text-xs animate-pulse">Memuat...</div>`;
-            dashKasPerProgram.innerHTML = `<div class="text-center py-2 text-slate-400 text-xs animate-pulse">Memuat...</div>`;
+            if(historyContainer) historyContainer.innerHTML = `<div class="text-center py-4 text-slate-400 text-xs animate-pulse">Menyinkronkan data...</div>`;
+            if(fullHistoryList) fullHistoryList.innerHTML = `<div class="text-center py-4 text-slate-400 text-xs animate-pulse">Memuat riwayat transaksi...</div>`;
+            if(dashPerProgram) dashPerProgram.innerHTML = `<div class="text-center py-2 text-slate-400 text-xs animate-pulse">Memuat...</div>`;
+            if(dashPerDivisi) dashPerDivisi.innerHTML = `<div class="text-center py-2 text-slate-400 text-xs animate-pulse">Memuat...</div>`;
+            if(dashKasPerProgram) dashKasPerProgram.innerHTML = `<div class="text-center py-2 text-slate-400 text-xs animate-pulse">Memuat...</div>`;
             if(dashPengeluaranPerProgram) dashPengeluaranPerProgram.innerHTML = `<div class="text-center py-2 text-slate-400 text-xs animate-pulse">Memuat...</div>`;
             
             try {
                 const response = await fetch(fetchUrl);
                 const data = await response.json();
                 
-                // Set Kartu Saldo & Statistik
                 document.getElementById('dashSaldo').textContent = formatRupiah(data.dashboard.totalSaldo || 0);
                 document.getElementById('dashPemasukan').textContent = formatRupiah(data.dashboard.totalDonasi || 0);
                 document.getElementById('dashPengeluaran').textContent = formatRupiah(data.dashboard.totalPenarikan || 0);
 
-                // Update Select Options
                 if(data.settings) {
                     populateSelect('divisi', data.settings.divisi, "Pilih Divisi...");
                     populateSelect('divisiPenarikan', data.settings.divisi, "Pilih Divisi...");
@@ -984,149 +936,225 @@
                     populateSelect('petugas', data.settings.petugas, "Pilih Petugas...");
                     populateSelect('picPenarikan', data.settings.petugas, "Pilih Petugas...");
                     
-                    // Render List
-                    renderSettingsList(listDivisiRender, data.settings.divisi, 'divisi');
-                    if(listProgramRender) renderSettingsList(listProgramRender, data.settings.program, 'program');
-                    if(listPetugasRender) renderSettingsList(listPetugasRender, data.settings.petugas, 'petugas');
+                    if(listDivisiRender) {
+                        listDivisiRender.innerHTML = '';
+                        const safeDivisi = data.settings.divisi || [];
+                        if(safeDivisi.length === 0) listDivisiRender.innerHTML = `<div class="text-xs text-slate-400 py-2">Belum ada divisi terdaftar.</div>`;
+                        safeDivisi.forEach(item => {
+                            const safeItem = item.replace(/'/g, "\\'"); 
+                            listDivisiRender.insertAdjacentHTML('beforeend', `
+                                <div class="flex justify-between items-center p-3.5 bg-slate-50 border border-slate-100 rounded-xl mb-2 hover:bg-slate-100 transition-colors">
+                                    <span class="text-sm font-semibold text-slate-700">${item}</span>
+                                    <div class="flex space-x-2">
+                                        <button onclick="openModal('edit', 'divisi', '${safeItem}')" type="button" class="p-2 text-blue-500 bg-blue-100/50 hover:bg-blue-100 rounded-lg transition-colors"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
+                                        <button onclick="openModal('delete', 'divisi', '${safeItem}')" type="button" class="p-2 text-red-500 bg-red-100/50 hover:bg-red-100 rounded-lg transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                                    </div>
+                                </div>
+                            `);
+                        });
+                    }
+
+                    if(listProgramRender) {
+                        listProgramRender.innerHTML = '';
+                        const safeProgram = data.settings.program || [];
+                        if(safeProgram.length === 0) listProgramRender.innerHTML = `<div class="text-xs text-slate-400 py-2">Belum ada program terdaftar.</div>`;
+                        safeProgram.forEach(item => {
+                            const safeItem = item.replace(/'/g, "\\'");
+                            listProgramRender.insertAdjacentHTML('beforeend', `
+                                <div class="flex justify-between items-center p-3.5 bg-slate-50 border border-slate-100 rounded-xl mb-2 hover:bg-slate-100 transition-colors">
+                                    <span class="text-sm font-semibold text-slate-700">${item}</span>
+                                    <div class="flex space-x-2">
+                                        <button onclick="openModal('edit', 'program', '${safeItem}')" type="button" class="p-2 text-blue-500 bg-blue-100/50 hover:bg-blue-100 rounded-lg transition-colors"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
+                                        <button onclick="openModal('delete', 'program', '${safeItem}')" type="button" class="p-2 text-red-500 bg-red-100/50 hover:bg-red-100 rounded-lg transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                                    </div>
+                                </div>
+                            `);
+                        });
+                    }
+
+                    if(listPetugasRender) {
+                        listPetugasRender.innerHTML = '';
+                        const safePetugas = data.settings.petugas || [];
+                        if(safePetugas.length === 0) listPetugasRender.innerHTML = `<div class="text-xs text-slate-400 py-2">Belum ada petugas terdaftar.</div>`;
+                        safePetugas.forEach(item => {
+                            const safeItem = item.replace(/'/g, "\\'");
+                            listPetugasRender.insertAdjacentHTML('beforeend', `
+                                <div class="flex justify-between items-center p-3.5 bg-slate-50 border border-slate-100 rounded-xl mb-2 hover:bg-slate-100 transition-colors">
+                                    <span class="text-sm font-semibold text-slate-700">${item}</span>
+                                    <div class="flex space-x-2">
+                                        <button onclick="openModal('edit', 'petugas', '${safeItem}')" type="button" class="p-2 text-blue-500 bg-blue-100/50 hover:bg-blue-100 rounded-lg transition-colors"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
+                                        <button onclick="openModal('delete', 'petugas', '${safeItem}')" type="button" class="p-2 text-red-500 bg-red-100/50 hover:bg-red-100 rounded-lg transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                                    </div>
+                                </div>
+                            `);
+                        });
+                    }
                 }
 
-                // Render Charts
-                renderProgressChart(dashPerProgram, data.dashboard.perProgram, data.dashboard.totalDonasi, 'bg-ashqaf', 'text-ashqaf');
-                renderProgressChart(dashPerDivisi, data.dashboard.perDivisi, data.dashboard.totalDonasi, 'bg-emerald-400', 'text-ashqaf');
-                if(dashPengeluaranPerProgram) renderProgressChart(dashPengeluaranPerProgram, data.dashboard.pengeluaranPerProgram, data.dashboard.totalPenarikan, 'bg-red-400', 'text-red-500');
-
-                // Render Kas Per Program
-                dashKasPerProgram.innerHTML = '';
-                if(data.dashboard.kasPerProgram && data.dashboard.kasPerProgram.length > 0) {
-                    data.dashboard.kasPerProgram.forEach(item => {
-                        const isMinus = item.total < 0;
-                        const textColor = isMinus ? 'text-red-500' : 'text-emerald-600';
-                        dashKasPerProgram.insertAdjacentHTML('beforeend', `
-                            <div class="mb-2 p-3 bg-slate-50 border border-slate-100 rounded-xl flex justify-between items-center transition-colors hover:bg-slate-100">
-                                <span class="font-semibold text-slate-700 text-sm">${item.nama}</span>
-                                <span class="font-bold ${textColor}">${formatRupiah(item.total)}</span>
-                            </div>
-                        `);
-                    });
-                } else {
-                    dashKasPerProgram.innerHTML = `<div class="text-xs text-slate-400">Belum ada data kas per program.</div>`;
+                // Render Chart Per Program
+                if(dashPerProgram) {
+                    dashPerProgram.innerHTML = '';
+                    if(data.dashboard.perProgram && data.dashboard.perProgram.length > 0) {
+                        data.dashboard.perProgram.forEach(item => {
+                            let percent = data.dashboard.totalDonasi > 0 ? (item.total / data.dashboard.totalDonasi * 100).toFixed(1) : 0;
+                            dashPerProgram.insertAdjacentHTML('beforeend', `
+                                <div class="mb-1">
+                                    <div class="flex justify-between text-xs mb-1">
+                                        <span class="font-medium text-slate-700">${item.nama}</span>
+                                        <span class="font-bold text-ashqaf">${formatRupiah(item.total)}</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 rounded-full h-2">
+                                        <div class="bg-emerald-500 h-2 rounded-full" style="width: ${percent}%"></div>
+                                    </div>
+                                </div>
+                            `);
+                        });
+                    } else {
+                        dashPerProgram.innerHTML = `<div class="text-xs text-slate-400">Belum ada data donasi.</div>`;
+                    }
                 }
 
-                // --- GABUNGKAN DATA TRANSAKSI ---
-                globalTransactions = [];
-                if(data.recentDonasi) data.recentDonasi.forEach(item => globalTransactions.push({ type: 'masuk', ...item }));
-                if(data.recentPenarikan) data.recentPenarikan.forEach(item => globalTransactions.push({ type: 'keluar', ...item }));
-                
-                // Urutkan dari yang terbaru
-                globalTransactions.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
-
-                historyContainer.innerHTML = '';
-                fullHistoryContainer.innerHTML = '';
-
-                if(globalTransactions.length === 0) {
-                    const emptyMsg = `<div class="text-center py-4 text-slate-400 text-sm">Belum ada aktivitas.</div>`;
-                    historyContainer.innerHTML = emptyMsg;
-                    fullHistoryContainer.innerHTML = emptyMsg;
-                    return;
+                // Render Chart Per Divisi
+                if(dashPerDivisi) {
+                    dashPerDivisi.innerHTML = '';
+                    if(data.dashboard.perDivisi && data.dashboard.perDivisi.length > 0) {
+                        data.dashboard.perDivisi.forEach(item => {
+                            let percent = data.dashboard.totalDonasi > 0 ? (item.total / data.dashboard.totalDonasi * 100).toFixed(1) : 0;
+                            dashPerDivisi.insertAdjacentHTML('beforeend', `
+                                <div class="mb-1">
+                                    <div class="flex justify-between text-xs mb-1">
+                                        <span class="font-medium text-slate-700">${item.nama}</span>
+                                        <span class="font-bold text-ashqaf">${formatRupiah(item.total)}</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 rounded-full h-2">
+                                        <div class="bg-blue-400 h-2 rounded-full" style="width: ${percent}%"></div>
+                                    </div>
+                                </div>
+                            `);
+                        });
+                    } else {
+                        dashPerDivisi.innerHTML = `<div class="text-xs text-slate-400">Belum ada data donasi.</div>`;
+                    }
                 }
 
-                // Function to build transaction card HTML
-                const buildCard = (item, index) => {
+                // Render Chart Pengeluaran Per Program
+                if(dashPengeluaranPerProgram) {
+                    dashPengeluaranPerProgram.innerHTML = '';
+                    if(data.dashboard.pengeluaranPerProgram && data.dashboard.pengeluaranPerProgram.length > 0) {
+                        data.dashboard.pengeluaranPerProgram.forEach(item => {
+                            let percent = data.dashboard.totalPenarikan > 0 ? (item.total / data.dashboard.totalPenarikan * 100).toFixed(1) : 0;
+                            dashPengeluaranPerProgram.insertAdjacentHTML('beforeend', `
+                                <div class="mb-1">
+                                    <div class="flex justify-between text-xs mb-1">
+                                        <span class="font-medium text-slate-700">${item.nama}</span>
+                                        <span class="font-bold text-red-500">${formatRupiah(item.total)}</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 rounded-full h-2">
+                                        <div class="bg-red-400 h-2 rounded-full" style="width: ${percent}%"></div>
+                                    </div>
+                                </div>
+                            `);
+                        });
+                    } else {
+                        dashPengeluaranPerProgram.innerHTML = `<div class="text-xs text-slate-400">Belum ada data pengeluaran.</div>`;
+                    }
+                }
+
+                // Render TOTAL KAS PER PROGRAM
+                if(dashKasPerProgram) {
+                    dashKasPerProgram.innerHTML = '';
+                    if(data.dashboard.kasPerProgram && data.dashboard.kasPerProgram.length > 0) {
+                        data.dashboard.kasPerProgram.forEach(item => {
+                            const isMinus = item.total < 0;
+                            const textColor = isMinus ? 'text-red-500' : 'text-emerald-600';
+                            dashKasPerProgram.insertAdjacentHTML('beforeend', `
+                                <div class="mb-2 p-3 bg-slate-50 border border-slate-100 rounded-xl flex justify-between items-center transition-colors hover:bg-slate-100">
+                                    <span class="font-semibold text-slate-700 text-sm">${item.nama}</span>
+                                    <span class="font-bold ${textColor}">${formatRupiah(item.total)}</span>
+                                </div>
+                            `);
+                        });
+                    } else {
+                        dashKasPerProgram.innerHTML = `<div class="text-xs text-slate-400">Belum ada data kas per program.</div>`;
+                    }
+                }
+
+                // Gabungkan riwayat masuk & keluar
+                let combined = [];
+                if(data.recentDonasi) {
+                    data.recentDonasi.forEach((item, index) => combined.push({ id: `in-${index}`, type: 'masuk', ...item }));
+                }
+                if(data.recentPenarikan) {
+                    data.recentPenarikan.forEach((item, index) => combined.push({ id: `out-${index}`, type: 'keluar', ...item }));
+                }
+
+                globalTransactions = combined.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+                const createCardHtml = (item) => {
                     const isMasuk = item.type === 'masuk';
-                    const title = isMasuk ? item.donatur : item.penarik;
-                    const sub = isMasuk ? item.alokasi : item.alokasi;
                     const color = isMasuk ? "text-emerald-600" : "text-red-500";
                     const bgColor = isMasuk ? "bg-emerald-50 border-emerald-100" : "bg-red-50 border-red-100";
                     const icon = isMasuk ? "arrow-down-left" : "arrow-up-right";
                     const prefix = isMasuk ? "+" : "-";
 
-                    let rawDate = new Date(item.timestamp);
-                    let dateStr = !isNaN(rawDate.getTime()) ? rawDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short'}) : '';
+                    const titleDivisi = item.divisi || "Tanpa Divisi";
+                    const program = item.alokasi || "Tanpa Program";
+                    
+                    const tglObj = new Date(item.timestamp);
+                    const tglString = isNaN(tglObj.getTime()) ? "-" : tglObj.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric'});
 
                     return `
-                    <div onclick="openTransactionDetail(${index})" class="p-3 border rounded-xl flex items-center justify-between cursor-pointer active:scale-95 hover:shadow-md transition-all ${bgColor}">
-                        <div class="flex items-center w-2/3">
+                    <div onclick="openTransactionDetail('${item.id}')" class="p-3 border rounded-xl flex items-center justify-between ${bgColor} cursor-pointer hover:shadow-md transition-all active:scale-95 mb-3">
+                        <div class="flex items-center overflow-hidden">
                             <div class="p-2 bg-white rounded-lg shadow-sm mr-3 shrink-0">
                                 <i data-lucide="${icon}" class="w-4 h-4 ${color}"></i>
                             </div>
                             <div class="overflow-hidden">
-                                <p class="text-sm font-bold text-slate-700 truncate">${title}</p>
-                                <p class="text-[10px] text-slate-500 truncate">${dateStr} • ${sub}</p>
+                                <p class="text-sm font-bold text-slate-700 truncate w-36 sm:w-48">${titleDivisi}</p>
+                                <p class="text-[10px] text-slate-500 font-medium truncate">${tglString} • ${program}</p>
                             </div>
                         </div>
-                        <div class="text-right shrink-0 ml-2">
+                        <div class="text-right whitespace-nowrap ml-2">
                             <p class="text-sm font-bold ${color}">${prefix}${formatRupiah(item.nominal)}</p>
                         </div>
                     </div>`;
                 };
 
-                // Render Dashboard (Max 5)
-                globalTransactions.slice(0, 5).forEach((item, idx) => {
-                    historyContainer.insertAdjacentHTML('beforeend', buildCard(item, idx));
-                });
+                if(historyContainer) {
+                    historyContainer.innerHTML = '';
+                    if(globalTransactions.length === 0) {
+                        historyContainer.innerHTML = `<div class="text-center py-4 text-slate-400 text-sm">Belum ada aktivitas.</div>`;
+                    } else {
+                        globalTransactions.slice(0, 5).forEach(item => {
+                            historyContainer.insertAdjacentHTML('beforeend', createCardHtml(item));
+                        });
+                    }
+                }
 
-                // Render Full List in Transaksi Tab
-                globalTransactions.forEach((item, idx) => {
-                    fullHistoryContainer.insertAdjacentHTML('beforeend', buildCard(item, idx));
-                });
-
+                if(fullHistoryList) {
+                    fullHistoryList.innerHTML = '';
+                    if(globalTransactions.length === 0) {
+                        fullHistoryList.innerHTML = `<div class="text-center py-4 text-slate-400 text-sm">Belum ada transaksi di periode ini.</div>`;
+                    } else {
+                        globalTransactions.forEach(item => {
+                            fullHistoryList.insertAdjacentHTML('beforeend', createCardHtml(item));
+                        });
+                    }
+                }
+                
                 lucide.createIcons();
 
             } catch (error) {
-                historyContainer.innerHTML = `<div class="text-center py-4 text-red-400 text-xs">Gagal memuat data.</div>`;
+                if(historyContainer) historyContainer.innerHTML = `<div class="text-center py-4 text-red-400 text-xs">Gagal memuat dashboard.</div>`;
+                if(fullHistoryList) fullHistoryList.innerHTML = `<div class="text-center py-4 text-red-400 text-xs">Gagal memuat data riwayat.</div>`;
                 console.error(error);
             }
         }
 
-        // Helpers untuk render Data List Pengaturan & Progress Chart
-        function renderSettingsList(container, arrayData, type) {
-            container.innerHTML = '';
-            if(!arrayData || arrayData.length === 0) {
-                container.innerHTML = `<div class="text-xs text-slate-400 py-2">Belum ada data.</div>`; return;
-            }
-            arrayData.forEach(item => {
-                const safeItem = item.replace(/'/g, "\\'");
-                container.insertAdjacentHTML('beforeend', `
-                    <div class="flex justify-between items-center p-3.5 bg-slate-50 border border-slate-100 rounded-xl mb-2 hover:bg-slate-100 transition-colors">
-                        <span class="text-sm font-semibold text-slate-700">${item}</span>
-                        <div class="flex space-x-2">
-                            <button onclick="openModal('edit', '${type}', '${safeItem}')" type="button" class="p-2 text-blue-500 bg-blue-100/50 hover:bg-blue-100 rounded-lg"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
-                            <button onclick="openModal('delete', '${type}', '${safeItem}')" type="button" class="p-2 text-red-500 bg-red-100/50 hover:bg-red-100 rounded-lg"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                        </div>
-                    </div>
-                `);
-            });
-        }
-
-        function renderProgressChart(container, arrayData, totalSemua, bgColorClass, textColorClass) {
-            container.innerHTML = '';
-            if(arrayData && arrayData.length > 0) {
-                arrayData.forEach(item => {
-                    let percent = totalSemua > 0 ? (item.total / totalSemua * 100).toFixed(1) : 0;
-                    container.insertAdjacentHTML('beforeend', `
-                        <div class="mb-1">
-                            <div class="flex justify-between text-xs mb-1">
-                                <span class="font-medium text-slate-700">${item.nama}</span>
-                                <span class="font-bold ${textColorClass}">${formatRupiah(item.total)}</span>
-                            </div>
-                            <div class="w-full bg-slate-100 rounded-full h-2">
-                                <div class="${bgColorClass} h-2 rounded-full" style="width: ${percent}%"></div>
-                            </div>
-                        </div>
-                    `);
-                });
-            } else {
-                container.innerHTML = `<div class="text-xs text-slate-400">Belum ada data.</div>`;
-            }
-        }
-
-        // Set Tab Default saat web dibuka
-        switchTab('dashboard');
-
-        // Helper mengisi otomatis dropdown list form
+        // Helper mengisi dropdown
         function populateSelect(elementId, dataArray, defaultText) {
             const selectEl = document.getElementById(elementId);
-            if (!selectEl) return;
+            if (!selectEl) return; 
             const safeArray = dataArray || []; 
             const currentValue = selectEl.value; 
             selectEl.innerHTML = `<option value="" disabled ${currentValue ? '' : 'selected'}>${defaultText}</option>`;
@@ -1139,11 +1167,8 @@
             }
         }
 
-        // Action mensubmit pengaturan baru
         async function submitSetting(tipe, inputValue, formId) {
-            if(!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("GANTI_DENGAN")) {
-                showToast("URL Web App belum dikonfigurasi!", "error"); return;
-            }
+            if(!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("GANTI_DENGAN")) { showToast("URL Web App belum dikonfigurasi!", "error"); return; }
             loadingOverlay.classList.remove('hidden');
             const payload = { jenis: "settings", tipe: tipe, nilai: inputValue };
             try {
@@ -1165,6 +1190,10 @@
                 e.preventDefault(); submitSetting('petugas', document.getElementById('newPetugas').value, 'settingPetugasForm');
             });
         }
+
+        // Jalankan saat pertama dimuat
+        switchTab('dashboard');
+
     </script>
 </body>
 </html>
