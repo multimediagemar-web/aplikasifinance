@@ -188,7 +188,6 @@
         lucide.createIcons();
 
         // --- KONFIGURASI WEB APP URL GOOGLE APPS SCRIPT ---
-        // URL Web App yang sudah Anda deploy
         const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzGYbCwJO2h5uWedNaOa5e6eA4iUGSmnD1quuvdHyCwIDsXHdcY5uLN-95zw9MjoC4/exec";
 
         // DOM Elements
@@ -254,7 +253,7 @@
         fileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
-                // Batasi ukuran (Opsional, di sini contoh max 5MB)
+                // Batasi ukuran file max 5MB
                 if(file.size > 5 * 1024 * 1024) {
                     alert('Ukuran file terlalu besar! Maksimal 5MB.');
                     fileInput.value = "";
@@ -308,16 +307,15 @@
                 // Gunakan POST fetch ke Apps Script Web App
                 const response = await fetch(GAS_WEB_APP_URL, {
                     method: 'POST',
-                    mode: 'no-cors', // Penting untuk bypass blokade CORS dari frontend statis ke GAS
+                    mode: 'no-cors', // Penting untuk bypass blokade CORS
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
-                // Karena mode 'no-cors', response menjadi opaque (tidak bisa dibaca statusnya secara langsung).
-                // Kita asumsikan berhasil jika tidak terjadi catch error.
+                // Asumsikan berhasil jika tidak ada error jaringan
                 alert("Alhamdulillah, data donasi berhasil disimpan!");
                 
-                // Reset Form (kecuali divisi dan petugas agar user tidak capek ketik ulang)
+                // Reset Form (kecuali divisi dan petugas)
                 const savedPetugas = document.getElementById('petugas').value;
                 const savedDivisi = document.getElementById('divisi').value;
                 
@@ -358,9 +356,6 @@
                     recentList.innerHTML = `<div class="text-center py-4 text-slate-400 text-sm">Belum ada donasi hari ini.</div>`;
                 } else {
                     data.forEach(item => {
-                        // Pastikan header di Spreadsheet sesuai untuk pemanggilan ini
-                        // Contoh mapping array ke object di Backend menghasilkan key berdasarkan Header kolom pertama
-                        // Kita asumsikan Header bernama: "Nama Donatur", "Nominal", "Metode", "Timestamp"
                         const donatur = item["Nama Donatur"] || "Anonim";
                         const nominal = item["Nominal"] || 0;
                         const metode = item["Metode"] || "-";
