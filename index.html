@@ -28,7 +28,7 @@
 </head>
 <body class="bg-slate-50 min-h-screen text-slate-800 font-sans pb-24">
 
-    <!-- Toast Notification (Replacement for alert) -->
+    <!-- Toast Notification -->
     <div id="toast" class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-5 py-3 rounded-2xl shadow-xl transition-all duration-300 -translate-y-24 opacity-0 z-[100] flex items-center w-11/12 max-w-sm">
         <i id="toastIcon" data-lucide="info" class="w-5 h-5 mr-3"></i>
         <span id="toastMsg" class="text-sm font-medium">Message here</span>
@@ -51,11 +51,31 @@
     <main class="max-w-md mx-auto px-4 relative">
         
         <!-- ================= VIEW: DASHBOARD ================= -->
-        <section id="view-dashboard" class="hidden animate-fade-in space-y-4">
+        <section id="view-dashboard" class="hidden animate-fade-in">
             
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col items-center justify-center text-center relative overflow-hidden">
+            <!-- Filter Tanggal -->
+            <div class="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 mb-4 flex items-end space-x-2 relative z-10">
+                <div class="flex-1">
+                    <label class="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Mulai Tgl</label>
+                    <input type="date" id="filterStart" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-ashqaf text-sm font-medium text-slate-700">
+                </div>
+                <div class="flex-1">
+                    <label class="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Sampai Tgl</label>
+                    <input type="date" id="filterEnd" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-ashqaf text-sm font-medium text-slate-700">
+                </div>
+                <div class="flex space-x-2">
+                    <button id="btnFilter" class="bg-ashqaf hover:bg-ashqaf-dark text-white p-3 rounded-xl shadow-md transition-colors flex items-center justify-center">
+                        <i data-lucide="filter" class="w-4 h-4"></i>
+                    </button>
+                    <button id="btnResetFilter" class="bg-slate-200 hover:bg-slate-300 text-slate-600 p-3 rounded-xl shadow-sm transition-colors hidden flex items-center justify-center">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col items-center justify-center text-center relative overflow-hidden mb-4">
                 <div class="absolute top-0 right-0 w-24 h-24 bg-ashqaf/5 rounded-bl-full"></div>
-                <p class="text-sm font-medium text-slate-500 mb-1">Total Saldo Kas</p>
+                <p id="labelTotalSaldo" class="text-sm font-medium text-slate-500 mb-1">Total Saldo Kas</p>
                 <h2 id="dashSaldo" class="text-3xl font-bold text-slate-800 tracking-tight">Rp 0</h2>
             </div>
 
@@ -97,6 +117,16 @@
                     </div>
                 </div>
 
+                <!-- NEW: Total Kas Per Program -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
+                    <h3 class="text-sm font-bold text-slate-700 mb-4 flex items-center">
+                        <i data-lucide="wallet" class="w-4 h-4 mr-2 text-ashqaf"></i> Total Kas per Program
+                    </h3>
+                    <div id="dashKasPerProgram" class="space-y-2">
+                        <div class="text-center py-2 text-slate-400 text-xs animate-pulse">Memuat data...</div>
+                    </div>
+                </div>
+
                 <!-- Per Divisi -->
                 <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
                     <h3 class="text-sm font-bold text-slate-700 mb-4 flex items-center">
@@ -108,9 +138,9 @@
                 </div>
             </div>
 
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 mt-6">
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 mt-6 mb-6">
                 <h3 class="text-sm font-bold text-slate-700 mb-4 flex items-center">
-                    <i data-lucide="clock" class="w-4 h-4 mr-2 text-ashqaf"></i> 5 Transaksi Terakhir
+                    <i data-lucide="clock" class="w-4 h-4 mr-2 text-ashqaf"></i> Transaksi Terakhir
                 </h3>
                 <div id="mixedHistory" class="space-y-3">
                     <div class="text-center py-4 text-slate-400 text-xs animate-pulse">Memuat riwayat...</div>
@@ -132,10 +162,6 @@
                         <label class="block text-sm font-medium text-slate-600 mb-1">Divisi Fundraising</label>
                         <select id="divisi" required class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-ashqaf/50 focus:border-ashqaf transition-colors">
                             <option value="" disabled selected>Pilih Divisi...</option>
-                            <option value="Online / Media Sosial">Divisi Online / Media Sosial</option>
-                            <option value="Event / Kajian">Divisi Event / Kajian</option>
-                            <option value="Jemput Donasi">Divisi Jemput Donasi</option>
-                            <option value="Kotak Amal / QRIS Mandiri">Divisi Kotak Amal / QRIS Mandiri</option>
                         </select>
                     </div>
 
@@ -194,10 +220,7 @@
                         <div>
                             <label class="block text-sm font-medium text-slate-600 mb-1">Alokasi</label>
                             <select id="alokasi" required class="w-full px-3 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-ashqaf/50 focus:border-ashqaf transition-colors">
-                                <option value="Operasional">Operasional</option>
-                                <option value="Pembangunan">Pembangunan</option>
-                                <option value="Yatim">Yatim</option>
-                                <option value="Sosial">Sosial</option>
+                                <option value="" disabled selected>Pilih Alokasi...</option>
                             </select>
                         </div>
                     </div>
@@ -262,11 +285,6 @@
                         <label class="block text-sm font-medium text-slate-600 mb-1">Peruntukan Dana</label>
                         <select id="alokasiPenarikan" required class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:border-red-500 transition-colors">
                             <option value="" disabled selected>Pilih Alokasi...</option>
-                            <option value="Operasional Masjid">Operasional Masjid (Listrik, Kebersihan)</option>
-                            <option value="Pembangunan / Renovasi">Pembangunan / Renovasi</option>
-                            <option value="Santunan Anak Yatim">Santunan Anak Yatim</option>
-                            <option value="Sosial & Kemanusiaan">Bantuan Sosial & Kemanusiaan</option>
-                            <option value="Lainnya">Lainnya</option>
                         </select>
                     </div>
 
@@ -430,7 +448,6 @@
 
         // KONFIGURASI WEB APP URL GOOGLE APPS SCRIPT
         // ===========================================
-        // PASTE URL ANDA DI SINI
         const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyaPqHTbpM3rj45NBqde85TTVXIXJlskA0yZQI7PDbsoofXDn1HD4lGr4jEmIkqriiL/exec";
         // ===========================================
 
@@ -449,8 +466,6 @@
         let base64String = "";
         let uploadedFileName = "";
         let uploadedMimeType = "";
-
-        // Tambahan variabel state untuk Pengeluaran
         let base64PenarikanString = "";
         let uploadedPenarikanFileName = "";
         let uploadedPenarikanMimeType = "";
@@ -465,8 +480,6 @@
         // Custom Toast Notification (Replaces alert)
         function showToast(message, type = 'success') {
             toastMsg.textContent = message;
-            
-            // Set styles based on type
             if (type === 'error') {
                 toast.classList.replace('bg-slate-800', 'bg-red-600');
                 toastIcon.setAttribute('data-lucide', 'alert-circle');
@@ -475,12 +488,8 @@
                 toastIcon.setAttribute('data-lucide', 'check-circle-2');
             }
             lucide.createIcons();
-
-            // Animate In
             toast.classList.remove('opacity-0', '-translate-y-24');
             toast.classList.add('opacity-100', 'translate-y-0');
-
-            // Animate Out
             setTimeout(() => {
                 toast.classList.remove('opacity-100', 'translate-y-0');
                 toast.classList.add('opacity-0', '-translate-y-24');
@@ -488,15 +497,10 @@
         }
 
         // --- Custom Modal Logic ---
-        let currentModalAction = null;
-        let currentModalType = null;
-        let currentModalValue = null;
+        let currentModalAction = null, currentModalType = null, currentModalValue = null;
 
         function openModal(action, type, value) {
-            currentModalAction = action;
-            currentModalType = type;
-            currentModalValue = value;
-
+            currentModalAction = action; currentModalType = type; currentModalValue = value;
             const modal = document.getElementById('customModal');
             const content = document.getElementById('modalContent');
             const title = document.getElementById('modalTitle');
@@ -506,18 +510,14 @@
             const icon = document.getElementById('modalIcon');
             const iconCont = document.getElementById('modalIconContainer');
 
-            // Setup UI based on action
             let titleType = type === 'divisi' ? 'Divisi' : (type === 'program' ? 'Program' : 'Petugas');
             
             if (action === 'edit') {
                 title.textContent = `Edit Data ${titleType}`;
                 desc.textContent = "Silakan ubah nama data di bawah ini:";
-                input.value = value;
-                input.classList.remove('hidden');
-                
+                input.value = value; input.classList.remove('hidden');
                 btn.textContent = "Simpan Ubahan";
                 btn.className = "flex-1 py-3.5 rounded-xl font-bold text-white shadow-lg transition-all bg-ashqaf hover:bg-ashqaf-dark shadow-ashqaf/30";
-                
                 icon.setAttribute('data-lucide', 'edit-3');
                 iconCont.className = "w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center mb-4 mx-auto";
                 icon.className = "w-6 h-6 text-blue-500";
@@ -525,18 +525,14 @@
                 title.textContent = `Hapus Data?`;
                 desc.innerHTML = `Apakah Anda yakin ingin menghapus <b>${value}</b>? Data riwayat yang sudah memakai nama ini tidak akan terhapus.`;
                 input.classList.add('hidden');
-                
                 btn.textContent = "Ya, Hapus";
                 btn.className = "flex-1 py-3.5 rounded-xl font-bold text-white shadow-lg transition-all bg-red-500 hover:bg-red-600 shadow-red-500/30";
-                
                 icon.setAttribute('data-lucide', 'trash-2');
                 iconCont.className = "w-12 h-12 rounded-full bg-red-50 flex items-center justify-center mb-4 mx-auto";
                 icon.className = "w-6 h-6 text-red-500";
             }
 
             lucide.createIcons();
-            
-            // Show Modal with Animation
             modal.classList.remove('hidden');
             setTimeout(() => {
                 modal.classList.remove('opacity-0');
@@ -548,14 +544,10 @@
         function closeModal() {
             const modal = document.getElementById('customModal');
             const content = document.getElementById('modalContent');
-            
             modal.classList.add('opacity-0');
             content.classList.remove('scale-100');
             content.classList.add('scale-95');
-            
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 300);
+            setTimeout(() => { modal.classList.add('hidden'); }, 300);
         }
 
         document.getElementById('modalConfirmBtn').addEventListener('click', () => {
@@ -573,11 +565,10 @@
         async function executeSettingUpdate(jenis, tipe, oldVal, newVal) {
             loadingOverlay.classList.remove('hidden');
             const payload = { jenis: jenis, tipe: tipe, oldVal: oldVal, newVal: newVal, val: oldVal };
-
             try {
                 await fetch(GAS_WEB_APP_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 showToast(`Data ${tipe} berhasil diperbarui!`);
-                fetchDashboardData(); // Refresh UI
+                fetchDashboardData();
             } catch (error) {
                 showToast("Gagal jaringan: " + error.message, "error");
             } finally {
@@ -588,23 +579,20 @@
 
         // Tab Navigation Logic
         function switchTab(tab) {
-            // Hide all views
             viewDashboard.classList.add('hidden');
             viewDonasi.classList.add('hidden');
             viewPenarikan.classList.add('hidden');
             viewPengaturan.classList.add('hidden');
             
-            // Reset nav styles
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.replace('text-ashqaf', 'text-slate-400');
             });
 
-            // Show active tab
             if(tab === 'dashboard') {
                 viewDashboard.classList.remove('hidden');
                 document.getElementById('nav-dashboard').classList.replace('text-slate-400', 'text-ashqaf');
                 headerSubtitle.textContent = "Ringkasan Keuangan";
-                fetchDashboardData(); // Auto refresh when opening dashboard
+                fetchDashboardData();
             } 
             else if(tab === 'donasi') {
                 viewDonasi.classList.remove('hidden');
@@ -656,18 +644,11 @@
             if (file) {
                 if(file.size > 5 * 1024 * 1024) {
                     showToast('Ukuran file terlalu besar! Maksimal 5MB.', 'error');
-                    fileInput.value = "";
-                    fileNameDisplay.textContent = "Klik untuk upload foto/PDF";
-                    return;
+                    fileInput.value = ""; fileNameDisplay.textContent = "Klik untuk upload foto/PDF"; return;
                 }
-                fileNameDisplay.textContent = file.name;
-                uploadedFileName = file.name;
-                uploadedMimeType = file.type;
-
+                fileNameDisplay.textContent = file.name; uploadedFileName = file.name; uploadedMimeType = file.type;
                 const reader = new FileReader();
-                reader.onload = function(event) {
-                    base64String = event.target.result.split(',')[1];
-                };
+                reader.onload = function(event) { base64String = event.target.result.split(',')[1]; };
                 reader.readAsDataURL(file);
             } else {
                 fileNameDisplay.textContent = "Klik untuk upload foto/PDF";
@@ -684,18 +665,11 @@
                 if (file) {
                     if(file.size > 5 * 1024 * 1024) {
                         showToast('Ukuran file terlalu besar! Maksimal 5MB.', 'error');
-                        fileInputPenarikan.value = "";
-                        fileNamePenarikanDisplay.textContent = "Klik untuk upload nota";
-                        return;
+                        fileInputPenarikan.value = ""; fileNamePenarikanDisplay.textContent = "Klik untuk upload nota"; return;
                     }
-                    fileNamePenarikanDisplay.textContent = file.name;
-                    uploadedPenarikanFileName = file.name;
-                    uploadedPenarikanMimeType = file.type;
-
+                    fileNamePenarikanDisplay.textContent = file.name; uploadedPenarikanFileName = file.name; uploadedPenarikanMimeType = file.type;
                     const reader = new FileReader();
-                    reader.onload = function(event) {
-                        base64PenarikanString = event.target.result.split(',')[1];
-                    };
+                    reader.onload = function(event) { base64PenarikanString = event.target.result.split(',')[1]; };
                     reader.readAsDataURL(file);
                 } else {
                     fileNamePenarikanDisplay.textContent = "Klik untuk upload nota";
@@ -720,34 +694,19 @@
             if(!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("GANTI_DENGAN")) {
                 showToast("URL Web App belum dikonfigurasi!", "error"); return;
             }
-
             loadingOverlay.classList.remove('hidden');
             const payload = {
-                jenis: "donasi", // Flag router backend
-                divisi: document.getElementById('divisi').value,
-                petugas: document.getElementById('petugas').value,
-                donatur: document.getElementById('donatur').value || "Anonim", // Default jika kosong
-                kontak: document.getElementById('kontak').value || "-",
-                nominal: parseInt(document.getElementById('nominalRaw').value),
-                metode: document.getElementById('metode').value,
-                alokasi: document.getElementById('alokasi').value,
-                base64: base64String,
-                filename: uploadedFileName,
-                mimeType: uploadedMimeType
+                jenis: "donasi", divisi: document.getElementById('divisi').value, petugas: document.getElementById('petugas').value,
+                donatur: document.getElementById('donatur').value || "Anonim", kontak: document.getElementById('kontak').value || "-",
+                nominal: parseInt(document.getElementById('nominalRaw').value), metode: document.getElementById('metode').value,
+                alokasi: document.getElementById('alokasi').value, base64: base64String, filename: uploadedFileName, mimeType: uploadedMimeType
             };
-
             try {
                 await fetch(GAS_WEB_APP_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 showToast("Alhamdulillah, Pemasukan berhasil dicatat!");
                 document.getElementById('donationForm').reset();
-                fileNameDisplay.textContent = "Klik untuk upload foto/PDF";
-                base64String = "";
-                switchTab('dashboard'); // Arahkan ke dashboard
-            } catch (error) {
-                showToast("Gagal jaringan: " + error.message, "error");
-            } finally {
-                loadingOverlay.classList.add('hidden');
-            }
+                fileNameDisplay.textContent = "Klik untuk upload foto/PDF"; base64String = ""; switchTab('dashboard');
+            } catch (error) { showToast("Gagal jaringan: " + error.message, "error"); } finally { loadingOverlay.classList.add('hidden'); }
         });
 
         // ================= SUBMIT PENARIKAN (PENGELUARAN) =================
@@ -756,42 +715,52 @@
             if(!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("GANTI_DENGAN")) {
                 showToast("URL Web App belum dikonfigurasi!", "error"); return;
             }
-
             loadingOverlay.classList.remove('hidden');
             const payload = {
-                jenis: "penarikan", // Flag router backend
-                penarik: document.getElementById('picPenarikan').value,
-                divisi: document.getElementById('divisiPenarikan').value,
-                nominal: parseInt(document.getElementById('nominalPenarikanRaw').value),
-                alokasi: document.getElementById('alokasiPenarikan').value,
-                keterangan: document.getElementById('keteranganPenarikan').value,
-                base64: base64PenarikanString,
-                filename: uploadedPenarikanFileName,
-                mimeType: uploadedPenarikanMimeType
+                jenis: "penarikan", penarik: document.getElementById('picPenarikan').value, divisi: document.getElementById('divisiPenarikan').value,
+                nominal: parseInt(document.getElementById('nominalPenarikanRaw').value), alokasi: document.getElementById('alokasiPenarikan').value,
+                keterangan: document.getElementById('keteranganPenarikan').value, base64: base64PenarikanString, filename: uploadedPenarikanFileName, mimeType: uploadedPenarikanMimeType
             };
-
             try {
                 await fetch(GAS_WEB_APP_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 showToast("Data pengeluaran berhasil direkam!");
                 document.getElementById('penarikanForm').reset();
-                fileNamePenarikanDisplay.textContent = "Klik untuk upload foto nota";
-                base64PenarikanString = "";
-                switchTab('dashboard'); // Arahkan ke dashboard
-            } catch (error) {
-                showToast("Gagal jaringan: " + error.message, "error");
-            } finally {
-                loadingOverlay.classList.add('hidden');
-            }
+                fileNamePenarikanDisplay.textContent = "Klik untuk upload foto nota"; base64PenarikanString = ""; switchTab('dashboard');
+            } catch (error) { showToast("Gagal jaringan: " + error.message, "error"); } finally { loadingOverlay.classList.add('hidden'); }
+        });
+
+        // ================= LISTENER FILTER TANGGAL =================
+        document.getElementById('btnFilter').addEventListener('click', () => {
+            const start = document.getElementById('filterStart').value;
+            const end = document.getElementById('filterEnd').value;
+            if(start || end) document.getElementById('btnResetFilter').classList.remove('hidden');
+            fetchDashboardData();
+        });
+
+        document.getElementById('btnResetFilter').addEventListener('click', () => {
+            document.getElementById('filterStart').value = '';
+            document.getElementById('filterEnd').value = '';
+            document.getElementById('btnResetFilter').classList.add('hidden');
+            fetchDashboardData();
         });
 
         // ================= LOAD DASHBOARD DATA (GET) =================
         async function fetchDashboardData() {
             if(!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("GANTI_DENGAN")) return;
             
+            const startVal = document.getElementById('filterStart').value;
+            const endVal = document.getElementById('filterEnd').value;
+            let fetchUrl = GAS_WEB_APP_URL;
+            if (startVal || endVal) fetchUrl += `?start=${startVal}&end=${endVal}`;
+
+            // Adjust Label Saldo
+            document.getElementById('labelTotalSaldo').textContent = (startVal || endVal) ? "Sisa Saldo (Filter Periode)" : "Total Saldo Kas";
+
             const historyContainer = document.getElementById('mixedHistory');
             const dashPerProgram = document.getElementById('dashPerProgram');
             const dashPerDivisi = document.getElementById('dashPerDivisi');
             const dashPengeluaranPerProgram = document.getElementById('dashPengeluaranPerProgram');
+            const dashKasPerProgram = document.getElementById('dashKasPerProgram');
             const listDivisiRender = document.getElementById('listDivisiRender');
             const listProgramRender = document.getElementById('listProgramRender');
             const listPetugasRender = document.getElementById('listPetugasRender');
@@ -799,10 +768,11 @@
             historyContainer.innerHTML = `<div class="text-center py-4 text-slate-400 text-xs animate-pulse">Menyinkronkan data...</div>`;
             dashPerProgram.innerHTML = `<div class="text-center py-2 text-slate-400 text-xs animate-pulse">Memuat...</div>`;
             dashPerDivisi.innerHTML = `<div class="text-center py-2 text-slate-400 text-xs animate-pulse">Memuat...</div>`;
+            dashKasPerProgram.innerHTML = `<div class="text-center py-2 text-slate-400 text-xs animate-pulse">Memuat...</div>`;
             if(dashPengeluaranPerProgram) dashPengeluaranPerProgram.innerHTML = `<div class="text-center py-2 text-slate-400 text-xs animate-pulse">Memuat...</div>`;
             
             try {
-                const response = await fetch(GAS_WEB_APP_URL);
+                const response = await fetch(fetchUrl);
                 const data = await response.json();
                 
                 // Set Kartu Saldo & Statistik
@@ -824,7 +794,7 @@
                     const safeDivisi = data.settings.divisi || [];
                     if(safeDivisi.length === 0) listDivisiRender.innerHTML = `<div class="text-xs text-slate-400 py-2">Belum ada divisi terdaftar.</div>`;
                     safeDivisi.forEach(item => {
-                        const safeItem = item.replace(/'/g, "\\'"); // escape single quotes for onclick
+                        const safeItem = item.replace(/'/g, "\\'"); 
                         listDivisiRender.insertAdjacentHTML('beforeend', `
                             <div class="flex justify-between items-center p-3.5 bg-slate-50 border border-slate-100 rounded-xl mb-2 hover:bg-slate-100 transition-colors">
                                 <span class="text-sm font-semibold text-slate-700">${item}</span>
@@ -940,6 +910,24 @@
                     }
                 }
 
+                // --- NEW: RENDER TOTAL KAS PER PROGRAM ---
+                dashKasPerProgram.innerHTML = '';
+                if(data.dashboard.kasPerProgram && data.dashboard.kasPerProgram.length > 0) {
+                    data.dashboard.kasPerProgram.forEach(item => {
+                        const isMinus = item.total < 0;
+                        const textColor = isMinus ? 'text-red-500' : 'text-emerald-600';
+                        
+                        dashKasPerProgram.insertAdjacentHTML('beforeend', `
+                            <div class="mb-2 p-3 bg-slate-50 border border-slate-100 rounded-xl flex justify-between items-center transition-colors hover:bg-slate-100">
+                                <span class="font-semibold text-slate-700 text-sm">${item.nama}</span>
+                                <span class="font-bold ${textColor}">${formatRupiah(item.total)}</span>
+                            </div>
+                        `);
+                    });
+                } else {
+                    dashKasPerProgram.innerHTML = `<div class="text-xs text-slate-400">Belum ada data kas per program.</div>`;
+                }
+
                 historyContainer.innerHTML = '';
 
                 // Gabungkan riwayat masuk & keluar lalu sort by Tanggal
@@ -997,18 +985,14 @@
         // Helper mengisi otomatis dropdown list form
         function populateSelect(elementId, dataArray, defaultText) {
             const selectEl = document.getElementById(elementId);
-            if (!selectEl) return; // Mencegah error null jika elemen belum ada/dirender
-            
-            const safeArray = dataArray || []; // Mencegah undefined error jika data tidak dikirim
+            if (!selectEl) return;
+            const safeArray = dataArray || []; 
             const currentValue = selectEl.value; 
-            
             selectEl.innerHTML = `<option value="" disabled ${currentValue ? '' : 'selected'}>${defaultText}</option>`;
             safeArray.forEach(item => {
                 const isSelected = item === currentValue ? 'selected' : '';
                 selectEl.insertAdjacentHTML('beforeend', `<option value="${item}" ${isSelected}>${item}</option>`);
             });
-            
-            // Tambahkan "Lainnya" khusus form penarikan jika belum ada
             if(elementId === 'alokasiPenarikan' && !safeArray.includes("Lainnya")) {
                  selectEl.insertAdjacentHTML('beforeend', `<option value="Lainnya">Lainnya</option>`);
             }
@@ -1019,44 +1003,27 @@
             if(!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes("GANTI_DENGAN")) {
                 showToast("URL Web App belum dikonfigurasi!", "error"); return;
             }
-
             loadingOverlay.classList.remove('hidden');
-            const payload = {
-                jenis: "settings",
-                tipe: tipe,
-                nilai: inputValue
-            };
-
+            const payload = { jenis: "settings", tipe: tipe, nilai: inputValue };
             try {
                 await fetch(GAS_WEB_APP_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 showToast(`Data ${tipe} berhasil ditambahkan!`);
                 document.getElementById(formId).reset();
-                fetchDashboardData(); // Otomatis refresh opsi dan grafik
-            } catch (error) {
-                showToast("Gagal jaringan: " + error.message, "error");
-            } finally {
-                loadingOverlay.classList.add('hidden');
-            }
+                fetchDashboardData();
+            } catch (error) { showToast("Gagal jaringan: " + error.message, "error"); } finally { loadingOverlay.classList.add('hidden'); }
         }
 
-        // Listener form Pengaturan
         document.getElementById('settingProgramForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            submitSetting('program', document.getElementById('newProgram').value, 'settingProgramForm');
+            e.preventDefault(); submitSetting('program', document.getElementById('newProgram').value, 'settingProgramForm');
         });
-
         document.getElementById('settingDivisiForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            submitSetting('divisi', document.getElementById('newDivisi').value, 'settingDivisiForm');
+            e.preventDefault(); submitSetting('divisi', document.getElementById('newDivisi').value, 'settingDivisiForm');
         });
-
         if(document.getElementById('settingPetugasForm')) {
             document.getElementById('settingPetugasForm').addEventListener('submit', (e) => {
-                e.preventDefault();
-                submitSetting('petugas', document.getElementById('newPetugas').value, 'settingPetugasForm');
+                e.preventDefault(); submitSetting('petugas', document.getElementById('newPetugas').value, 'settingPetugasForm');
             });
         }
-
     </script>
 </body>
 </html>
